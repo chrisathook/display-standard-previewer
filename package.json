@@ -1,0 +1,19 @@
+{
+  "name": "display-standard-previewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "display-standard-previewer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://chrisathook@github.com/chrisathook/display-standard-previewer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrisathook/display-standard-previewer/issues"
+  },
+  "homepage": "https://github.com/chrisathook/display-standard-previewer#readme"
+}
