@@ -8,6 +8,7 @@ var merge = require('merge-stream');
 var jimp = require('gulp-jimp');
 var buffer = require('vinyl-buffer');
 var rename = require('gulp-simple-rename');
+var path = require('path');
 /**
  * @param gulp - function
  * @param bs - Browser sync instance
@@ -33,8 +34,10 @@ module.exports = function (gulp, bs, options, flags) {
       cssVarMap: function (sprite) {
         sprite.name = sprite.name;
       },
-      cssTemplate: './gulp/scss_maps.template.handlebars'
+      cssTemplate: path.join (__dirname.replace ('tasks',''),  'scss_maps.template.handlebars')
     }));
+
+    
     // Pipe image stream through image optimizer and onto disk
     var imgStream = spriteData.img;
     if (use_jpg === false) {
