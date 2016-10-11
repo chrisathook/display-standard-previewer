@@ -4,11 +4,7 @@
  */
 'use strict';
 var useref = require('gulp-useref');
-var sourcemaps = require('gulp-sourcemaps');
 var source = require('vinyl-source-stream');
-var gulpif = require('gulp-if');
-var uglify = require('gulp-uglify');
-var gutil = require('gulp-util');
 /**
  * @param gulp - function
  * @param bs - Browser sync instance

@@ -36,6 +36,7 @@ module.exports = function (opts, task) {
     gulp.task('optimize-css', require('./tasks/optimize-css')(gulp, config.optimize, config.flags));
     gulp.task('optimize-js', require('./tasks/optimize-js')(gulp, config.optimize, config.flags));
     gulp.task('optimize-html', require('./tasks/optimize-html')(gulp, config.optimize, config.flags));
+    gulp.task('scripts-vendor', require('./tasks/scripts-vendor')(gulp, bs, config.html, config.flags));
     // define watch actions
     gulp.task('watch', function (done) {
       var callback = function () {
@@ -73,7 +74,7 @@ module.exports = function (opts, task) {
     } else if (task === 'build') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
     } else if (task === 'build-dist') {
-      gulp.series('prod','sprite-all', 'sass', 'clean-dist', 'build-dist',gulp.parallel('optimize-css','optimize-js','optimize-html') ,   'resolve').call();
+      gulp.series('prod','sprite-all', 'sass', 'clean-dist', 'build-dist','scripts-vendor' ,gulp.parallel('optimize-css','optimize-js','optimize-html') ,   'resolve').call();
     } else if (task === 'default') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
     } else {

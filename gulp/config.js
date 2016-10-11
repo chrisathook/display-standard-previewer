@@ -18,6 +18,11 @@ var config = {
       path.join('!', root, '/images/**/*-sprite.{gif,jpg,png,svg}')
     ]
   },
+  html: {
+      src: './!(*.fla|*.md)',
+      entry: path.join(root, '/index.html'),
+      dist: path.join(dest, '_dist')
+    },
   sass: {
     src: path.join(root, 'sass/**/*.scss'),
     watch_src: [path.join(root, 'sass/**/*.scss'), path.join(root, '!./sass/spritesheets/**/*.scss')],
@@ -48,9 +53,10 @@ var config = {
       src: path.join(dest, '_dist')
     },
     src: [
-      path.join(root, '/index.html'),
-      path.join(root, '/libs/**/*.js'),
+
       path.join(root, '/images/**/*.{gif,jpg,png,svg}'),
+      path.join('!',root, '/images/{_assets,_assets/**}'),
+
       path.join(root, '/css/**/*.css'),
       path.join(root, '/static-backup.jpg')
     ],
