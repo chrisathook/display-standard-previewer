@@ -4,6 +4,8 @@ var path = require('path');
 var fs = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 
+var gulpTasks = require ( './gulp');
+
 var opts = {
 	logLevel: 2,
   home:'.'
@@ -23,6 +25,11 @@ var run = function (){
 
 
   opts.home = process.cwd();
+
+
+  gulpTasks()
+    .then (function (){console.log ('resolved')})
+
 
 };
 
