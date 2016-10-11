@@ -9,18 +9,16 @@ module.exports = function (opts, task) {
       resolve();
       done();
     });
-
     gulp.task('reload', function (done) {
-
-        bs.reload();
-
-        done();
-        });
-
+      bs.reload();
+      done();
+    });
     gulp.task('sass', require('./tasks/lib-sass')(gulp, bs, config.sass, config.flags));
     gulp.task('sprite-collapsed-foreground', require('./tasks/sprite-images')(gulp, bs, config.sprite.collapsed_foreground, config.flags));
     gulp.task('sprite-collapsed-background', require('./tasks/sprite-images')(gulp, bs, config.sprite.collapsed_background, config.flags));
     gulp.task('sprite-all', gulp.parallel('sprite-collapsed-foreground', 'sprite-collapsed-background'));
+    gulp.task('clean-dist', require('./tasks/clean')(gulp, config.build.clean));
+    gulp.task('build-dist', require('./tasks/build')(gulp, bs, config.build, config.flags));
     // define watch actions
     gulp.task('watch', function (done) {
       var callback = function () {
@@ -50,24 +48,17 @@ module.exports = function (opts, task) {
     if (task === 'watch') {
       gulp.series('sprite-all', 'sass', 'watch').call();
     } else if (task === 'end-watch') {
-      bs.exit ();
-
+      bs.exit();
     } else if (task === 'sass') {
-
       gulp.series('sass', 'resolve').call();
-
     } else if (task === 'sprite') {
-
       gulp.series('sprite-all', 'resolve').call();
-
     } else if (task === 'build') {
-
       gulp.series('sprite-all', 'sass', 'resolve').call();
-
+    } else if (task === 'build-dist') {
+      gulp.series('sprite-all', 'sass','clean-dist','build-dist', 'resolve').call();
     } else if (task === 'default') {
-
       gulp.series('sprite-all', 'sass', 'resolve').call();
-
     } else {
       resolve()
     }

@@ -40,6 +40,9 @@ var parseTask = function (paramArray) {
   if (paramArray.indexOf('build') !== -1) {
     return 'build'
   }
+  if (paramArray.indexOf('build-dist') !== -1) {
+      return 'build-dist'
+    }
   if (paramArray.indexOf('end-watch') !== -1) {
       return 'end-watch'
     }

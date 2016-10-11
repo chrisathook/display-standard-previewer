@@ -1,6 +1,6 @@
 /**
- * Minify PNG, JPEG, GIF and SVG images.
- * @tasks/images
+ * copy all source to a disk
+ * @tasks/build
  */
 'use strict';
 /**
@@ -11,10 +11,10 @@
  * options.dist : Output directory.
  * @returns {Function}
  */
-module.exports = function(gulp, bs, options) {
+module.exports = function(gulp, bs, options,flags) {
   return function() {
-    return gulp.src(options.src)
+    return gulp.src(options.src,{base: '.'})
       .pipe(gulp.dest(options.dist))
-      .pipe(bs.stream());
+
   };
 };
