@@ -37,7 +37,7 @@ module.exports = function (gulp, bs, options, flags) {
       cssTemplate: path.join (__dirname.replace ('tasks',''),  'scss_maps.template.handlebars')
     }));
 
-    
+
     // Pipe image stream through image optimizer and onto disk
     var imgStream = spriteData.img;
     if (use_jpg === false) {

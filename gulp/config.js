@@ -10,7 +10,14 @@ var config = {
   },
   clean: {
     src: dest + '/**/*'
-  },
+  },reload: {
+      src: [
+        path.join(root, '/**/index.html'),
+        path.join(root, '/libs/**/*.js'),
+        path.join(root, '/images/**/*.{gif,jpg,png,svg}'),
+        path.join('!', root, '/images/**/*-sprite.{gif,jpg,png,svg}')
+      ]
+    },
 
   sass: {
     src: path.join (root,'sass/**/*.scss')  ,

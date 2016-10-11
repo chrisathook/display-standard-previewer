@@ -9,6 +9,14 @@ module.exports = function (opts, task) {
       resolve();
       done();
     });
+
+    gulp.task('reload', function (done) {
+
+        bs.reload();
+
+        done();
+        });
+
     gulp.task('sass', require('./tasks/lib-sass')(gulp, bs, config.sass, config.flags));
     gulp.task('sprite-collapsed-foreground', require('./tasks/sprite-images')(gulp, bs, config.sprite.collapsed_foreground, config.flags));
     gulp.task('sprite-collapsed-background', require('./tasks/sprite-images')(gulp, bs, config.sprite.collapsed_background, config.flags));
@@ -24,8 +32,8 @@ module.exports = function (opts, task) {
         },
         online: false,
         port: config.server.port,
-        reloadDelay: 1000,
-        reloadDebounce: 1000,
+        reloadDelay: 250,
+        reloadDebounce: 250,
         ghostMode: {
           clicks: false,
           forms: false,
@@ -36,6 +44,7 @@ module.exports = function (opts, task) {
       // generate new sass partials for spritesheets when images edited
       gulp.watch(config.sprite.collapsed_foreground.src, gulp.series('sprite-collapsed-foreground'));
       gulp.watch(config.sprite.collapsed_background.src, gulp.series('sprite-collapsed-background'));
+      gulp.watch(config.reload.src, gulp.series('reload'));
       done();
     });
     if (task === 'watch') {
