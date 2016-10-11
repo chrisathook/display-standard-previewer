@@ -2,8 +2,12 @@
 var gulp = require('gulp');
 var config = require('./config');
 var bs = require('browser-sync').create();
+var util = require('gulp-util');
 module.exports = function (opts, task) {
   return new Promise(function (resolve, reject) {
+    var d1 = new Date();
+    util.log ('ALL tasks Start');
+
     gulp.task('dev', function (done) {
       config.flags.minify = false;
       config.flags.sourcemap = true;
@@ -15,11 +19,14 @@ module.exports = function (opts, task) {
       config.flags.minify = true;
       config.flags.sourcemap = false;
       config.flags.type = 'prod';
-      console.log("!!!!", config.flags.sourcemap);
+
       done();
     });
     gulp.task('resolve', function (done) {
-      console.log('gulp done');
+
+      var d2 = new Date();
+      var seconds = (d2 - d1) / 1000;
+      util.log ('ALL tasks complete',seconds +'s');
       resolve();
       done();
     });
@@ -74,7 +81,7 @@ module.exports = function (opts, task) {
     } else if (task === 'build') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
     } else if (task === 'build-dist') {
-      gulp.series('prod','sprite-all', 'sass', 'clean-dist', 'build-dist','scripts-vendor' ,gulp.parallel('optimize-css','optimize-js','optimize-html') ,   'resolve').call();
+      gulp.series('prod', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel('optimize-css', 'optimize-js', 'optimize-html'), 'resolve').call();
     } else if (task === 'default') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
     } else {

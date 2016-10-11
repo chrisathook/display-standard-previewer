@@ -5,6 +5,7 @@
 'use strict';
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
+var util = require('gulp-util');
 /**
  * @param gulp - function
  * @param bs - Browser sync instance
@@ -18,10 +19,19 @@ var sourcemaps = require('gulp-sourcemaps');
 module.exports = function (gulp, bs, options, flags) {
   return function () {
 
+    util.log ('@tasks/sass start');
+
+    var d1 = new Date();
+
     return gulp.src(options.src)
       .pipe(sass({includePaths: [require("bourbon").includePaths]}).on('error', sass.logError))
       .pipe(gulp.dest(options.dist))
-      .pipe(bs.stream());
+      .pipe(bs.stream())
+      .on ('error',util.log)
+      .on ('finish',function (){
+        var d2 = new Date();
+        var seconds =  (d2- d1)/1000;
+        util.log ('@tasks/sass complete',seconds +'s')} )
   }
 };
 
