@@ -1,5 +1,7 @@
 'use strict';
-var dest = '.';
+var dest = process.cwd();
+var root = process.cwd();
+var path = require('path');
 var config = {
   flags: {
     minify: false,
@@ -11,10 +13,9 @@ var config = {
   },
 
   sass: {
-    src: './sass/**/*.scss',
-    watch_src: ['./sass/**/*.scss', '!./sass/spritesheets/**/*.scss'],
-    image_src: './static/toSprite/**/*.{gif,jpg,png,svg}',
-    dist: dest + '/css/'
+    src: path.join (root,'sass/**/*.scss')  ,
+    watch_src: [path.join (root,'sass/**/*.scss'), path.join (root,'!./sass/spritesheets/**/*.scss')],
+    dist: path.join (dest, 'css/')
   },
 
   sprite: {
