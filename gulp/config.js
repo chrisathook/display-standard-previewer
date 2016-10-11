@@ -56,6 +56,18 @@ var config = {
     ],
     dist: path.join(dest, '_dist')
   },
+  optimize: {
+      css: {
+        src: path.join(dest, '_dist', '/**/*.css')
+      },
+      js: {
+        src: path.join(dest, '_dist',  '/**/*.js')
+      },
+      html: {
+        src:path.join(dest, '_dist', '/**/*.html')
+      },
+      dist: path.join(dest, '_dist')
+    },
   server: {
     root: dest,
     port: 8080

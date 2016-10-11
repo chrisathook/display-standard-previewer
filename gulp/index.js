@@ -4,6 +4,20 @@ var config = require('./config');
 var bs = require('browser-sync').create();
 module.exports = function (opts, task) {
   return new Promise(function (resolve, reject) {
+    gulp.task('dev', function (done) {
+      config.flags.minify = false;
+      config.flags.sourcemap = true;
+      config.flags.type = 'dev';
+      done();
+    });
+    gulp.task('prod', function (done) {
+      console.log("!!!!", config.flags.sourcemap);
+      config.flags.minify = true;
+      config.flags.sourcemap = false;
+      config.flags.type = 'prod';
+      console.log("!!!!", config.flags.sourcemap);
+      done();
+    });
     gulp.task('resolve', function (done) {
       console.log('gulp done');
       resolve();
@@ -19,6 +33,9 @@ module.exports = function (opts, task) {
     gulp.task('sprite-all', gulp.parallel('sprite-collapsed-foreground', 'sprite-collapsed-background'));
     gulp.task('clean-dist', require('./tasks/clean')(gulp, config.build.clean));
     gulp.task('build-dist', require('./tasks/build')(gulp, bs, config.build, config.flags));
+    gulp.task('optimize-css', require('./tasks/optimize-css')(gulp, config.optimize, config.flags));
+    gulp.task('optimize-js', require('./tasks/optimize-js')(gulp, config.optimize, config.flags));
+    gulp.task('optimize-html', require('./tasks/optimize-html')(gulp, config.optimize, config.flags));
     // define watch actions
     gulp.task('watch', function (done) {
       var callback = function () {
@@ -56,7 +73,7 @@ module.exports = function (opts, task) {
     } else if (task === 'build') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
     } else if (task === 'build-dist') {
-      gulp.series('sprite-all', 'sass','clean-dist','build-dist', 'resolve').call();
+      gulp.series('prod','sprite-all', 'sass', 'clean-dist', 'build-dist',gulp.parallel('optimize-css','optimize-js','optimize-html') ,   'resolve').call();
     } else if (task === 'default') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
     } else {
