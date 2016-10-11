@@ -20,19 +20,19 @@ var config = {
 
   sprite: {
     collapsed_foreground: {
-      src: './_toSprite/collapsed/foreground/**/*.png',
-      dist_img: dest + '/images/',
-      dist_img_source: dest + '/images/_assets/',
-      dist_css: './sass/spritesheets',
+      src: path.join (root,'_toSprite/collapsed/foreground/**/*.png'),
+      dist_img: path.join (dest , '/images/'),
+      dist_img_source: path.join (dest , '/images/_assets/'),
+      dist_css: path.join (root,'/sass/spritesheets'),
       prefix: 'collapsed-foreground',
       jpg_conversion:false,
       quality:80
     },
     collapsed_background: {
-      src: './_toSprite/collapsed/background/**/*.png',
-      dist_img_source: dest + '/images/_assets/',
-      dist_img: dest + '/images/',
-      dist_css: './sass/spritesheets',
+      src: path.join (root,'_toSprite/collapsed/background/**/*.png'),
+      dist_img: path.join (dest , '/images/'),
+      dist_img_source: path.join (dest , '/images/_assets/'),
+      dist_css: path.join (root,'/sass/spritesheets'),
       prefix: 'collapsed-background',
       jpg_conversion:true,
       quality:80
