@@ -32,7 +32,7 @@ Compiles the .scss files into .css
 
 ### sprite
 
-Compiles all the images in /_toSprite into spritesheets and generates the necessary .scss partials in /sass/spritesheets.
+Compiles all the images in /_toSprite into spritesheets and generates the necessary .scss partials in /sass/spritesheets. Final spritesheets are placed in /images.
 
 ### build
 

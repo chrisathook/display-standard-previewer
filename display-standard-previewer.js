@@ -24,7 +24,7 @@ var run = function () {
     console.log(__dirname);
     console.log(argv);
   }
-  return
+
   gulpTasks(opts, task)
     .then(function () {
       console.log('resolved')
