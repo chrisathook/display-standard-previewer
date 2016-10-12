@@ -20,7 +20,7 @@ var util = require('gulp-util');
  */
 module.exports = function (gulp, bs, options, flags) {
   return function () {
-    util.log('@tasks/sprite-images start ',options.prefix);
+    util.log('@tasks/sprite-images start ', options.prefix);
     var d1 = new Date();
     var use_jpg = false;
     if (options.jpg_conversion === true /*&& flags.type === 'prod'*/) {
@@ -38,7 +38,7 @@ module.exports = function (gulp, bs, options, flags) {
         sprite.name = sprite.name;
       },
       cssTemplate: path.join(__dirname.replace('tasks', ''), 'scss_maps.template.handlebars')
-    }));
+    }).on('error', util.log));
     // Pipe image stream through image optimizer and onto disk
     var imgStream = spriteData.img;
     if (use_jpg === false) {
@@ -59,7 +59,7 @@ module.exports = function (gulp, bs, options, flags) {
             type: 'jpg',
             quality: options.quality
           }
-        }))
+        }).on('error', util.log))
         .pipe(gulp.dest(options.dist_img));
     }
     // Pipe CSS stream through CSS optimizer and onto disk
@@ -68,10 +68,11 @@ module.exports = function (gulp, bs, options, flags) {
     // Return a merged stream to handle both `end` events
     return merge(imgStream, cssStream)
       .pipe(bs.stream())
-      .on ('error',util.log)
-            .on ('finish',function (){
-              var d2 = new Date();
-              var seconds =  (d2- d1)/1000;
-              util.log ('@tasks/sprite-images complete ',options.prefix,seconds +'s')} )
+      .on('error', util.log)
+      .on('finish', function () {
+        var d2 = new Date();
+        var seconds = (d2 - d1) / 1000;
+        util.log('@tasks/sprite-images complete ', options.prefix, seconds + 's')
+      })
   };
 };

@@ -1,10 +1,11 @@
 /**
  * optimize css in place for production
- * @tasks/optimize-css
+ * @tasks/optimize-js
  */
 'use strict';
 
 var uglify = require('gulp-uglify');
+var util = require('gulp-util');
 /**
  * @param gulp - function
  * @param options - object
@@ -14,9 +15,17 @@ var uglify = require('gulp-uglify');
  */
 module.exports = function(gulp,  options, flags) {
   return function() {
+    util.log('@tasks/optimize-js start ');
+        var d1 = new Date();
     return gulp.src(options.js.src)
-      .pipe(uglify({'compress':{'drop_console':!flags.sourcemap}}))
+      .pipe(uglify({'compress':{'drop_console':!flags.sourcemap}}).on('error', util.log))
       .pipe(gulp.dest(options.dist))
+      .on('error', util.log)
+            .on('finish', function () {
+              var d2 = new Date();
+              var seconds = (d2 - d1) / 1000;
+              util.log('@tasks/optimize-js complete ',  seconds + 's')
+            })
 
   };
 };
