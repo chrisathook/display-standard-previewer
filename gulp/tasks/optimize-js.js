@@ -3,7 +3,6 @@
  * @tasks/optimize-js
  */
 'use strict';
-
 var uglify = require('gulp-uglify');
 var util = require('gulp-util');
 /**
@@ -13,19 +12,18 @@ var util = require('gulp-util');
  * options.dist : Output directory.
  * @returns {Function}
  */
-module.exports = function(gulp,  options, flags) {
-  return function() {
+module.exports = function (gulp, options, flags) {
+  return function () {
     util.log('@tasks/optimize-js start ');
-        var d1 = new Date();
+    var d1 = new Date();
     return gulp.src(options.js.src)
-      .pipe(uglify({'compress':{'drop_console':!flags.sourcemap}}).on('error', util.log))
+      .pipe(uglify({'compress': {'drop_console': !flags.sourcemap}}).on('error', util.log))
       .pipe(gulp.dest(options.dist))
       .on('error', util.log)
-            .on('finish', function () {
-              var d2 = new Date();
-              var seconds = (d2 - d1) / 1000;
-              util.log('@tasks/optimize-js complete ',  seconds + 's')
-            })
-
+      .on('finish', function () {
+        var d2 = new Date();
+        var seconds = (d2 - d1) / 1000;
+        util.log('@tasks/optimize-js complete ', seconds + 's')
+      })
   };
 };

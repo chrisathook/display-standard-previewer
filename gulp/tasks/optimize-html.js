@@ -23,7 +23,7 @@ module.exports = function (gulp, options, flags) {
       .on('finish', function () {
         var d2 = new Date();
         var seconds = (d2 - d1) / 1000;
-        util.log('@tasks/optimize-html complete ',  seconds + 's')
+        util.log('@tasks/optimize-html complete ', seconds + 's')
       })
   };
 };
