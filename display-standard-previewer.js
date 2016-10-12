@@ -4,46 +4,44 @@ var path = require('path');
 var fs = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 var gulpTasks = require('./gulp');
-
-
 var opts = {
   logLevel: 2,
   home: '.',
-  port:0
+  port: 0,
+  debug: false
 };
 var task = "default";
 var run = function () {
-  console.log("Hello World");
-  console.log(process.cwd());
-  console.log(__filename);
-  console.log(__dirname);
-  console.log(argv);
   opts.home = process.cwd();
-
-
   task = parseTask(argv._);
-
   opts.port = parsePort(argv.p);
-
-  console.log (opts.port);
-
+  opts.debug = parseDebug(argv);
+  console.log(opts.debug);
+  if (opts.debug) {
+    console.log("Hello World");
+    console.log(process.cwd());
+    console.log(__filename);
+    console.log(__dirname);
+    console.log(argv);
+  }
   return
   gulpTasks(opts, task)
     .then(function () {
       console.log('resolved')
     })
 };
-
+var parseDebug = function (object) {
+  if (object.hasOwnProperty('d')) {
+    return true
+  }
+  return false
+};
 var parsePort = function (value) {
-
-  if (Number.isInteger (value) && value !=0) {
-
+  if (Number.isInteger(value) && value != 0) {
     return value
   }
-
   return 8080;
 };
-
 var parseTask = function (paramArray) {
   if (paramArray.indexOf('watch') !== -1) {
     return 'watch'
@@ -58,12 +56,11 @@ var parseTask = function (paramArray) {
     return 'build'
   }
   if (paramArray.indexOf('build-dist') !== -1) {
-      return 'build-dist'
-    }
+    return 'build-dist'
+  }
   if (paramArray.indexOf('end-watch') !== -1) {
-      return 'end-watch'
-    }
-
+    return 'end-watch'
+  }
   return 'default'
 };
 run();
