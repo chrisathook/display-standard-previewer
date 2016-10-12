@@ -7,6 +7,13 @@ A Gulp based task runner and development server for use with [Standard Media Dis
 * Node - Globals
     * Gulp 4
 
+### Gulp 4 Install
+
+If you don't have gulp 4 installed globally do the following.
+
+`npm install gulpjs/gulp-cli -g`
+`npm install github:gulpjs/gulp#4.0 -g`
+
 ## How To Install And Update
 
 `npm install -g https://github.com/chrisathook/display-standard-previewer`
@@ -39,7 +46,7 @@ To stop the dev server type `ctrl+c` in the command line window.
 
 ### build-dist
 
-Runs *build* then compiles all the source into /_dist with minificaiton.
+Runs *build* then compiles all the source into /_dist with minification.
 
 ## Options
 

@@ -54,7 +54,7 @@ module.exports = function (opts, task) {
           baseDir: config.server.root
         },
         online: false,
-        port: config.server.port,
+        port: opts.port,
         reloadDelay: 250,
         reloadDebounce: 250,
         ghostMode: {

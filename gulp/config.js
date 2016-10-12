@@ -75,8 +75,7 @@ var config = {
       dist: path.join(dest, '_dist')
     },
   server: {
-    root: dest,
-    port: 8080
+    root: dest
   }
 };
 module.exports = config;

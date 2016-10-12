@@ -8,7 +8,8 @@ var gulpTasks = require('./gulp');
 
 var opts = {
   logLevel: 2,
-  home: '.'
+  home: '.',
+  port:0
 };
 var task = "default";
 var run = function () {
@@ -22,11 +23,27 @@ var run = function () {
 
   task = parseTask(argv._);
 
+  opts.port = parsePort(argv.p);
+
+  console.log (opts.port);
+
+  return
   gulpTasks(opts, task)
     .then(function () {
       console.log('resolved')
     })
 };
+
+var parsePort = function (value) {
+
+  if (Number.isInteger (value) && value !=0) {
+
+    return value
+  }
+
+  return 8080;
+};
+
 var parseTask = function (paramArray) {
   if (paramArray.indexOf('watch') !== -1) {
     return 'watch'
