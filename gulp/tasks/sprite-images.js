@@ -1,6 +1,6 @@
 /**
  * Minify PNG, JPEG, GIF and SVG images.
- * @tasks/images
+ * @tasks/sprite-images
  */
 'use strict';
 var spritesmith = require('gulp.spritesmith');
@@ -20,7 +20,7 @@ var util = require('gulp-util');
  */
 module.exports = function (gulp, bs, options, flags) {
   return function () {
-    util.log('@tasks/sass start ',options.prefix);
+    util.log('@tasks/sprite-images start ',options.prefix);
     var d1 = new Date();
     var use_jpg = false;
     if (options.jpg_conversion === true /*&& flags.type === 'prod'*/) {
@@ -31,7 +31,7 @@ module.exports = function (gulp, bs, options, flags) {
       imgName: options.prefix + '-sprite.png',
       cssName: '_sprite-' + options.prefix + '.scss',
       padding: 4,
-      imgPath: '../images/' + options.prefix + '-sprite.png',
+      imgPath: `../${options.img_root}/` + options.prefix + '-sprite.png',
       cssOpts: {functions: false, prefix: options.prefix + '-map', usejpg: use_jpg},
       cssSpritesheetName: 'spritesheet',
       cssVarMap: function (sprite) {
@@ -72,6 +72,6 @@ module.exports = function (gulp, bs, options, flags) {
             .on ('finish',function (){
               var d2 = new Date();
               var seconds =  (d2- d1)/1000;
-              util.log ('@tasks/sass complete ',options.prefix,seconds +'s')} )
+              util.log ('@tasks/sprite-images complete ',options.prefix,seconds +'s')} )
   };
 };

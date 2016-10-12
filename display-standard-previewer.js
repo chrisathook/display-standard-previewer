@@ -16,15 +16,15 @@ var run = function () {
   task = parseTask(argv._);
   opts.port = parsePort(argv.p);
   opts.debug = parseDebug(argv);
-  console.log(opts.debug);
+
   if (opts.debug) {
+    console.log(opts.debug);
     console.log("Hello World");
     console.log(process.cwd());
     console.log(__filename);
     console.log(__dirname);
     console.log(argv);
   }
-
   gulpTasks(opts, task)
     .then(function () {
       console.log('resolved')

@@ -2,80 +2,93 @@
 var dest = process.cwd();
 var root = process.cwd();
 var path = require('path');
-var config = {
-  flags: {
-    minify: false,
-    sourcemap: true,
-    type: 'dev'
-  },
-  clean: {
-    src: dest + '/**/*'
-  }, reload: {
-    src: [
-      path.join(root, '/**/index.html'),
-      path.join(root, '/libs/**/*.js'),
-      path.join(root, '/images/**/*.{gif,jpg,png,svg}'),
-      path.join('!', root, '/images/**/*-sprite.{gif,jpg,png,svg}')
-    ]
-  },
-  html: {
+module.exports = function (images_path, build_dist_path, js_path) {
+  if (images_path === undefined || images_path === 'undefined') {
+    images_path = 'images';
+  }
+  if (build_dist_path === undefined || build_dist_path === 'undefined') {
+    build_dist_path = '_dist';
+  }
+  if (js_path === undefined || js_path === 'undefined') {
+    js_path = 'libs';
+    }
+
+
+
+  return {
+    flags: {
+      minify: false,
+      sourcemap: true,
+      type: 'dev'
+    },
+    clean: {
+      src: dest + '/**/*'
+    }, reload: {
+      src: [
+        path.join(root, '/**/index.html'),
+        path.join(root, `/${js_path}/**/*.js`),
+        path.join(root, `/${images_path}/**/*.{gif,jpg,png,svg}`),
+        path.join('!', root, `/${images_path}/**/*-sprite.{gif,jpg,png,svg}`)
+      ]
+    },
+    html: {
       src: './!(*.fla|*.md)',
       entry: path.join(root, '/index.html'),
-      dist: path.join(dest, '_dist')
+      dist: path.join(dest, `${build_dist_path}`)
     },
-  sass: {
-    src: path.join(root, 'sass/**/*.scss'),
-    watch_src: [path.join(root, 'sass/**/*.scss'), path.join(root, '!./sass/spritesheets/**/*.scss')],
-    dist: path.join(dest, 'css/')
-  },
-  sprite: {
-    collapsed_foreground: {
-      src: path.join(root, '_toSprite/collapsed/foreground/**/*.png'),
-      dist_img: path.join(dest, '/images/'),
-      dist_img_source: path.join(dest, '/images/_assets/'),
-      dist_css: path.join(root, '/sass/spritesheets'),
-      prefix: 'collapsed-foreground',
-      jpg_conversion: false,
-      quality: 80
+    sass: {
+      src: path.join(root, 'sass/**/*.scss'),
+      watch_src: [path.join(root, 'sass/**/*.scss'), path.join(root, '!./sass/spritesheets/**/*.scss')],
+      dist: path.join(dest, 'css/')
     },
-    collapsed_background: {
-      src: path.join(root, '_toSprite/collapsed/background/**/*.png'),
-      dist_img: path.join(dest, '/images/'),
-      dist_img_source: path.join(dest, '/images/_assets/'),
-      dist_css: path.join(root, '/sass/spritesheets'),
-      prefix: 'collapsed-background',
-      jpg_conversion: true,
-      quality: 80
-    }
-  },
-  build: {
-    clean: {
-      src: path.join(dest, '_dist')
+    sprite: {
+      collapsed_foreground: {
+        src: path.join(root, '_toSprite/collapsed/foreground/**/*.png'),
+        img_root:`${images_path}`,
+        dist_img: path.join(dest, `/${images_path}/`),
+        dist_img_source: path.join(dest, `/${images_path}/_assets/`),
+        dist_css: path.join(root, '/sass/spritesheets'),
+        prefix: 'collapsed-foreground',
+        jpg_conversion: false,
+        quality: 80
+      },
+      collapsed_background: {
+        src: path.join(root, '_toSprite/collapsed/background/**/*.png'),
+        img_root:`${images_path}`,
+        dist_img: path.join(dest, `/${images_path}/`),
+        dist_img_source: path.join(dest, `/${images_path}/_assets/`),
+        dist_css: path.join(root, '/sass/spritesheets'),
+        prefix: 'collapsed-background',
+        jpg_conversion: true,
+        quality: 80
+      }
     },
-    src: [
-
-      path.join(root, '/images/**/*.{gif,jpg,png,svg}'),
-      path.join('!',root, '/images/{_assets,_assets/**}'),
-
-      path.join(root, '/css/**/*.css'),
-      path.join(root, '/static-backup.jpg')
-    ],
-    dist: path.join(dest, '_dist')
-  },
-  optimize: {
+    build: {
+      clean: {
+        src: path.join(dest, `${build_dist_path}`)
+      },
+      src: [
+        path.join(root, `/${images_path}/**/*.{gif,jpg,png,svg}`),
+        path.join('!', root, `/${images_path}/{_assets,_assets/**}`),
+        path.join(root, '/css/**/*.css'),
+        path.join(root, '/static-backup.jpg')
+      ],
+      dist: path.join(dest, `${build_dist_path}`)
+    },
+    optimize: {
       css: {
-        src: path.join(dest, '_dist', '/**/*.css')
+        src: path.join(dest, `${build_dist_path}`, '/**/*.css')
       },
       js: {
-        src: path.join(dest, '_dist',  '/**/*.js')
+        src: path.join(dest, `${build_dist_path}`, '/**/*.js')
       },
       html: {
-        src:path.join(dest, '_dist', '/**/*.html')
+        src: path.join(dest, `${build_dist_path}`, '/**/*.html')
       },
-      dist: path.join(dest, '_dist')
+      dist: path.join(dest, `${build_dist_path}`)
     },
-  server: {
-    root: dest
-  }
+    server: {
+      root: dest
+    }
+  };
 };
-module.exports = config;

@@ -3,11 +3,23 @@ var gulp = require('gulp');
 var config = require('./config');
 var bs = require('browser-sync').create();
 var util = require('gulp-util');
+var path = require('path');
+var checkTemplateType = function () {
+  var fs = require("fs");
+  var file = fs.readFileSync(path.join(process.cwd(), 'index.html'), 'utf8');
+  //console.log (file);
+  //console.log("String"+(file.search('<meta templateType="215_MU">')>-1 ? " " : " not ")+"found");
+  if (file.search('<meta templateType="215_MU">') > -1) {
+    config = config('img', 'dist', 'js');
+  } else {
+    config = config();
+  }
+};
+checkTemplateType();
 module.exports = function (opts, task) {
   return new Promise(function (resolve, reject) {
     var d1 = new Date();
-    util.log ('ALL tasks Start');
-
+    util.log('ALL tasks Start');
     gulp.task('dev', function (done) {
       config.flags.minify = false;
       config.flags.sourcemap = true;
@@ -19,14 +31,12 @@ module.exports = function (opts, task) {
       config.flags.minify = true;
       config.flags.sourcemap = false;
       config.flags.type = 'prod';
-
       done();
     });
     gulp.task('resolve', function (done) {
-
       var d2 = new Date();
       var seconds = (d2 - d1) / 1000;
-      util.log ('ALL tasks complete',seconds +'s');
+      util.log('ALL tasks complete', seconds + 's');
       resolve();
       done();
     });
