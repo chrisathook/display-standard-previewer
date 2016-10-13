@@ -12,19 +12,23 @@ var util = require('gulp-util');
  * @returns {Function}
  */
 module.exports = function (gulp, options) {
-  return function (done) {
-    util.log('@tasks/clean start ');
-    var d1 = new Date();
-    del(options.src, {
-      force: true
-    }).then(function () {
-        var d2 = new Date();
-        var seconds = (d2 - d1) / 1000;
-        util.log('@tasks/clean complete ',  seconds + 's');
-      done()
-      })
-      .catch(function (err) {
-        util.log("!!!", err)
-      })
-  };
+  try {
+    return function (done) {
+      util.log('@tasks/clean start ');
+      var d1 = new Date();
+      del(options.src, {
+        force: true
+      }).then(function () {
+          var d2 = new Date();
+          var seconds = (d2 - d1) / 1000;
+          util.log('@tasks/clean complete ', seconds + 's');
+          done()
+        })
+        .catch(function (err) {
+          util.log("!!!", err)
+        })
+    };
+  } catch (err) {
+    util.log(err);
+  }
 };

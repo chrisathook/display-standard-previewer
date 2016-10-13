@@ -23,56 +23,64 @@ module.exports = function (gulp, bs, options, flags) {
     util.log('@tasks/sprite-images start ', options.prefix);
     var d1 = new Date();
     var use_jpg = false;
-    if (options.jpg_conversion === true /*&& flags.type === 'prod'*/) {
-      use_jpg = true;
+    try {
+      if (options.jpg_conversion === true /*&& flags.type === 'prod'*/) {
+        use_jpg = true;
+      }
+      // Generate our spritesheet
+      var spriteData = gulp.src(options.src).pipe(spritesmith({
+        imgName: options.prefix + '-sprite.png',
+        cssName: '_sprite-' + options.prefix + '.scss',
+        padding: 4,
+        imgPath: `../${options.img_root}/` + options.prefix + '-sprite.png',
+        cssOpts: {functions: false, prefix: options.prefix + '-map', usejpg: use_jpg},
+        cssSpritesheetName: 'spritesheet',
+        cssVarMap: function (sprite) {
+          sprite.name = sprite.name;
+        },
+        cssTemplate: path.join(__dirname.replace('tasks', ''), 'scss_maps.template.handlebars')
+      }).on('error', util.log));
+      // Pipe image stream through image optimizer and onto disk
+      var imgStream = spriteData.img;
+      if (use_jpg === false) {
+        imgStream.pipe(gulp.dest(options.dist_img));
+      } else {
+        // change file name and write png
+        imgStream.pipe(rename(function (path) {
+            return path.replace(options.prefix, "__" + options.prefix);
+          }))
+          .pipe(gulp.dest(options.dist_img_source))
+          // change file name back and write jpg
+          .pipe(rename(function (path) {
+            return path.replace('__', '');
+          }))
+          .pipe(buffer())
+          .pipe(jimp({
+            '': {
+              type: 'jpg',
+              quality: options.quality
+            }
+          }).on('error', util.log))
+          .pipe(gulp.dest(options.dist_img));
+      }
+    } catch (err) {
+      util.log(err);
     }
-    // Generate our spritesheet
-    var spriteData = gulp.src(options.src).pipe(spritesmith({
-      imgName: options.prefix + '-sprite.png',
-      cssName: '_sprite-' + options.prefix + '.scss',
-      padding: 4,
-      imgPath: `../${options.img_root}/` + options.prefix + '-sprite.png',
-      cssOpts: {functions: false, prefix: options.prefix + '-map', usejpg: use_jpg},
-      cssSpritesheetName: 'spritesheet',
-      cssVarMap: function (sprite) {
-        sprite.name = sprite.name;
-      },
-      cssTemplate: path.join(__dirname.replace('tasks', ''), 'scss_maps.template.handlebars')
-    }).on('error', util.log));
-    // Pipe image stream through image optimizer and onto disk
-    var imgStream = spriteData.img;
-    if (use_jpg === false) {
-      imgStream.pipe(gulp.dest(options.dist_img));
-    } else {
-      // change file name and write png
-      imgStream.pipe(rename(function (path) {
-          return path.replace(options.prefix, "__" + options.prefix);
-        }))
-        .pipe(gulp.dest(options.dist_img_source))
-        // change file name back and write jpg
-        .pipe(rename(function (path) {
-          return path.replace('__', '');
-        }))
-        .pipe(buffer())
-        .pipe(jimp({
-          '': {
-            type: 'jpg',
-            quality: options.quality
-          }
-        }).on('error', util.log))
-        .pipe(gulp.dest(options.dist_img));
+    try {
+      // Pipe CSS stream through CSS optimizer and onto disk
+      var cssStream = spriteData.css
+        .pipe(gulp.dest(options.dist_css));
+      // Return a merged stream to handle both `end` events
+      return merge(imgStream, cssStream)
+        .pipe(bs.stream())
+        .on('error', util.log)
+        .on('finish', function () {
+          var d2 = new Date();
+          var seconds = (d2 - d1) / 1000;
+          util.log('@tasks/sprite-images complete ', options.prefix, seconds + 's')
+        })
+    } catch (err) {
+      util.log(err);
     }
-    // Pipe CSS stream through CSS optimizer and onto disk
-    var cssStream = spriteData.css
-      .pipe(gulp.dest(options.dist_css));
-    // Return a merged stream to handle both `end` events
-    return merge(imgStream, cssStream)
-      .pipe(bs.stream())
-      .on('error', util.log)
-      .on('finish', function () {
-        var d2 = new Date();
-        var seconds = (d2 - d1) / 1000;
-        util.log('@tasks/sprite-images complete ', options.prefix, seconds + 's')
-      })
   };
 };
