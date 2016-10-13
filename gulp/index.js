@@ -54,6 +54,7 @@ module.exports = function (opts, task) {
     gulp.task('optimize-js', require('./tasks/optimize-js')(gulp, config.optimize, config.flags));
     gulp.task('optimize-html', require('./tasks/optimize-html')(gulp, config.optimize, config.flags));
     gulp.task('scripts-vendor', require('./tasks/scripts-vendor')(gulp, bs, config.html, config.flags));
+    gulp.task('bundle', require('./tasks/bundle-default')(gulp, config.bundle.default, config.flags));
     // define watch actions
     gulp.task('watch', function (done) {
       var callback = function () {
@@ -80,6 +81,9 @@ module.exports = function (opts, task) {
       gulp.watch(config.reload.src, gulp.series('reload'));
       done();
     });
+
+
+
     if (task === 'watch') {
       gulp.series('sprite-all', 'sass', 'watch').call();
     } else if (task === 'end-watch') {
@@ -94,6 +98,9 @@ module.exports = function (opts, task) {
       gulp.series('prod', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel('optimize-css', 'optimize-js', 'optimize-html'), 'resolve').call();
     } else if (task === 'default') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
+    } else if (task === 'bundle') {
+
+      gulp.series('bundle', 'resolve').call();
     } else {
       resolve()
     }

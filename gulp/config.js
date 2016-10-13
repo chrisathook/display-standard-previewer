@@ -11,10 +11,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
   }
   if (js_path === undefined || js_path === 'undefined') {
     js_path = 'libs';
-    }
-
-
-
+  }
   return {
     flags: {
       minify: false,
@@ -44,7 +41,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
     sprite: {
       collapsed_foreground: {
         src: path.join(root, '_toSprite/collapsed/foreground/**/*.png'),
-        img_root:`${images_path}`,
+        img_root: `${images_path}`,
         dist_img: path.join(dest, `/${images_path}/`),
         dist_img_source: path.join(dest, `/${images_path}/_assets/`),
         dist_css: path.join(root, '/sass/spritesheets'),
@@ -54,7 +51,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
       },
       collapsed_background: {
         src: path.join(root, '_toSprite/collapsed/background/**/*.png'),
-        img_root:`${images_path}`,
+        img_root: `${images_path}`,
         dist_img: path.join(dest, `/${images_path}/`),
         dist_img_source: path.join(dest, `/${images_path}/_assets/`),
         dist_css: path.join(root, '/sass/spritesheets'),
@@ -69,7 +66,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
       },
       src: [
         path.join(root, `/${images_path}/**/*.{gif,jpg,png,svg}`),
-        path.join('!', root, `/${images_path}/{_assets,_assets/**}`),
+        '!'+ path.join(root, `/${images_path}/{_assets,_assets/**}`),
         path.join(root, '/css/**/*.css'),
         path.join(root, '/*static-backup.jpg')
       ],
@@ -87,6 +84,18 @@ module.exports = function (images_path, build_dist_path, js_path) {
       },
       dist: path.join(dest, `${build_dist_path}`)
     },
+    bundle: {
+          default: {
+            src: [
+              path.join(dest, `${build_dist_path}`,'/**/*.*'),
+              '!'+path.join(dest, `${build_dist_path}`,'/**/__*.png'),
+              '!'+path.join(dest, `${build_dist_path}`,'/**/.*')
+
+            ],
+            dist: path.join(dest, `${build_dist_path}`),
+            name: 'banner.zip'
+          }
+        },
     server: {
       root: dest
     }

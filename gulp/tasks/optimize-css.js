@@ -13,7 +13,7 @@ var util = require('gulp-util');
  * @returns {Function}
  */
 module.exports = function (gulp, options, flags) {
-  util.log('@tasks/optimize-css start ');
+
   var d1 = new Date();
   return function () {
     return gulp.src(options.css.src)

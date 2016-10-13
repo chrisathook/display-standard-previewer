@@ -49,6 +49,12 @@ To stop the dev server type `ctrl+c` in the command line window.
 
 Runs *build* then compiles all the source into /_dist with minification.
 
+
+### bundle
+
+Bundles contents of */dist* into 1 zip file for upload. Contents must exist to be zipped.
+
+
 ## Options
 
 ### -p

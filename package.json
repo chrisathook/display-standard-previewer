@@ -47,6 +47,9 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "devDependencies": {
-    "gulp-contains": "^1.1.0"
+    "gulp-contains": "^1.1.0",
+    "gulp-debug": "^2.1.2",
+    "gulp-print": "^2.0.1",
+    "gulp-vinyl-zip": "^1.4.0"
   }
 }

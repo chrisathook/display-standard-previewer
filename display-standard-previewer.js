@@ -16,7 +16,6 @@ var run = function () {
   task = parseTask(argv._);
   opts.port = parsePort(argv.p);
   opts.debug = parseDebug(argv);
-
   if (opts.debug) {
     console.log(opts.debug);
     console.log("Hello World");
@@ -60,6 +59,9 @@ var parseTask = function (paramArray) {
   }
   if (paramArray.indexOf('end-watch') !== -1) {
     return 'end-watch'
+  }
+  if (paramArray.indexOf('bundle') !== -1) {
+    return 'bundle'
   }
   return 'default'
 };
