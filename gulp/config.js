@@ -66,7 +66,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
       },
       src: [
         path.join(root, `/${images_path}/**/*.{gif,jpg,png,svg}`),
-        '!'+ path.join(root, `/${images_path}/{_assets,_assets/**}`),
+        '!' + path.join(root, `/${images_path}/{_assets,_assets/**}`),
         path.join(root, '/css/**/*.css'),
         path.join(root, '/*static-backup.jpg')
       ],
@@ -85,17 +85,18 @@ module.exports = function (images_path, build_dist_path, js_path) {
       dist: path.join(dest, `${build_dist_path}`)
     },
     bundle: {
-          default: {
-            src: [
-              path.join(dest, `${build_dist_path}`,'/**/*.*'),
-              '!'+path.join(dest, `${build_dist_path}`,'/**/__*.png'),
-              '!'+path.join(dest, `${build_dist_path}`,'/**/.*')
-
-            ],
-            dist: path.join(dest, `${build_dist_path}`),
-            name: 'banner.zip'
-          }
-        },
+      default: {
+        src: [
+          path.join(dest, `${build_dist_path}`, '/**/*.*'),
+          '!' + path.join(dest, `${build_dist_path}`, '/**/__*.png'),
+          '!' + path.join(dest, `${build_dist_path}`, '/**/.*'),
+          '!' + path.join(dest, `${build_dist_path}`, '/*.jpg')// exclude static by default
+        ],
+        dist: path.join(dest, `${build_dist_path}`),
+        name: 'banner.zip',
+        meta: path.join(dest, `${build_dist_path}`, '/index.html')
+      }
+    },
     server: {
       root: dest
     }
