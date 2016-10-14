@@ -47,7 +47,7 @@ To stop the dev server type `ctrl+c` in the command line window.
 
 ### build-dist
 
-Runs *build* then compiles all the source into /_dist with minification.
+Runs *build* then compiles all the source into /_dist with minification. If there is a static backup jpg in the root folder, that image will be renamed to the root folder name automatically. Images in */images* and */_toSprite* are not affected.
 
 
 ### bundle

@@ -18,28 +18,22 @@ var del = require('del');
 module.exports = function (gulp, bs, options, flags) {
   return function () {
     util.log('@tasks/rename-standard start ');
-
-    var arr = path.resolve(options.dist,'../');
+    var arr = path.resolve(options.dist, '../');
     arr = arr.split(path.sep);
-    var name = arr[arr.length-1];
-
-    util.log('!!!',name );
+    var name = arr[arr.length - 1];
     var d1 = new Date();
     try {
       return gulp.src(options.src)
         .pipe(rename(function (path) {
           path.basename = name;
-
         }))
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {
-
-          del.sync ([
-            path.join (options.dist,'/*.jpg'),
-            '!'+path.join (options.dist,`/${name}.jpg`)
+          del.sync([
+            path.join(options.dist, '/*.jpg'),
+            '!' + path.join(options.dist, `/${name}.jpg`)
           ]);
-
           var d2 = new Date();
           var seconds = (d2 - d1) / 1000;
           util.log('@tasks/rename-standard complete ', options.prefix, seconds + 's')
