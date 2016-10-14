@@ -50,6 +50,7 @@ module.exports = function (opts, task) {
     gulp.task('sprite-all', gulp.parallel('sprite-collapsed-foreground', 'sprite-collapsed-background'));
     gulp.task('clean-dist', require('./tasks/clean')(gulp, config.build.clean));
     gulp.task('build-dist', require('./tasks/build')(gulp, bs, config.build, config.flags));
+    gulp.task('rename-standard', require('./tasks/rename-standard')(gulp, bs, config.rename_backup, config.flags));
     gulp.task('optimize-css', require('./tasks/optimize-css')(gulp, config.optimize, config.flags));
     gulp.task('optimize-js', require('./tasks/optimize-js')(gulp, config.optimize, config.flags));
     gulp.task('optimize-html', require('./tasks/optimize-html')(gulp, config.optimize, config.flags));
@@ -95,7 +96,7 @@ module.exports = function (opts, task) {
     } else if (task === 'build') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
     } else if (task === 'build-dist') {
-      gulp.series('prod', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel('optimize-css', 'optimize-js', 'optimize-html'), 'resolve').call();
+      gulp.series('prod', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel('optimize-css', 'optimize-js', 'optimize-html','rename-standard'), 'resolve').call();
     } else if (task === 'default') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
     } else if (task === 'bundle') {

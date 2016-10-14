@@ -72,6 +72,13 @@ module.exports = function (images_path, build_dist_path, js_path) {
       ],
       dist: path.join(dest, `${build_dist_path}`)
     },
+    rename_backup:{
+      src:path.join(dest, `${build_dist_path}`, '/*.jpg'),
+      dist:path.join(dest, `${build_dist_path}`)
+
+
+    }
+    ,
     optimize: {
       css: {
         src: path.join(dest, `${build_dist_path}`, '/**/*.css')
