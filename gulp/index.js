@@ -9,7 +9,7 @@ var checkTemplateType = function () {
   var file = fs.readFileSync(path.join(process.cwd(), 'index.html'), 'utf8');
   //console.log (file);
   //console.log("String"+(file.search('<meta templateType="215_MU">')>-1 ? " " : " not ")+"found");
-  if (file.search('<meta templateType="215_MU">') > -1) {
+  if (file.search('<meta name="template.type" content="215_MU">') > -1) {
     config = config('img', 'dist', 'js');
   } else {
     config = config();
