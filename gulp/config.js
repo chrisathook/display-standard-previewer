@@ -106,7 +106,6 @@ module.exports = function (images_path, build_dist_path, js_path) {
           '!' + path.join(dest, `${build_dist_path}`, '/*.jpg')// exclude static by default
         ],
         dist: path.join(dest, `${build_dist_path}`),
-        name: 'banner.zip',
         meta: path.join(dest, `${build_dist_path}`, '/index.html')
       }
     },

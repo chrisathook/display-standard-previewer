@@ -23,6 +23,10 @@ module.exports = function (gulp, options, flags) {
     try {
       del.sync (path.join (options.dist,'/*.zip'));
 
+      var arr = path.resolve(options.dist, '../');
+      arr = arr.split(path.sep);
+      var name = arr[arr.length - 1] +'.zip';
+
       var file = fs.readFileSync(options.meta, 'utf8');
       var opt = Object.assign({}, options);
       if (file.search('content="in.zip') > -1) {
@@ -34,7 +38,7 @@ module.exports = function (gulp, options, flags) {
     var d1 = new Date();
     try {
       return gulp.src(opt.src)
-        .pipe(zip(opt.name).on('error', util.log))
+        .pipe(zip(name).on('error', util.log))
         .pipe(gulp.dest(opt.dist)
           .on('finish', function () {
             var d2 = new Date();
