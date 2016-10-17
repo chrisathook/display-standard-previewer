@@ -49,10 +49,10 @@ To stop the dev server type `ctrl+c` in the command line window.
 
 Runs *build* then compiles all the source into /_dist with minification. If there is a static backup jpg in the root folder, that image will be renamed to the root folder name automatically. Images in */images* and */_toSprite* are not affected.
 
+The .css sheet will be inlined by default when built. If you don't want this feature remove the `inline` param from the CSS <link> tag in the index.html.
 
-### bundle
+Bundles contents of */dist* into 1 zip file for upload.
 
-Bundles contents of */dist* into 1 zip file for upload. Contents must exist to be zipped.
 
 
 ## Options

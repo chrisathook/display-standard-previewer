@@ -25,7 +25,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
         path.join(root, '/**/index.html'),
         path.join(root, `/${js_path}/**/*.js`),
         path.join(root, `/${images_path}/**/*.{gif,jpg,png,svg}`),
-        path.join('!', root, `/${images_path}/**/*-sprite.{gif,jpg,png,svg}`)
+        '!'+ path.join(dest, `${build_dist_path}`)
       ]
     },
     html: {
@@ -73,12 +73,17 @@ module.exports = function (images_path, build_dist_path, js_path) {
       ],
       dist: path.join(dest, `${build_dist_path}`)
     },
-    rename_backup:{
-      src:path.join(dest, `${build_dist_path}`, '/*.jpg'),
-      dist:path.join(dest, `${build_dist_path}`)
-
-
-    }
+    rename_backup: {
+      src: path.join(dest, `${build_dist_path}`, '/*.jpg'),
+      dist: path.join(dest, `${build_dist_path}`)
+    },
+    inline: {
+      src: path.join(dest, `${build_dist_path}`, '/index.html'),
+      dist: path.join(dest, `${build_dist_path}`)
+    },
+    inline_clean: {
+          src: path.join(dest, `${build_dist_path}`, '/**/*.css')
+        }
     ,
     optimize: {
       css: {

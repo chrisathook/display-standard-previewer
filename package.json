@@ -44,11 +44,10 @@
     "gulp.spritesmith": "^6.2.1",
     "merge-stream": "^1.0.0",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
-  },
-  "devDependencies": {
+    "vinyl-source-stream": "^1.1.0",
     "gulp-contains": "^1.1.0",
     "gulp-debug": "^2.1.2",
+    "gulp-inline-source": "^3.0.0",
     "gulp-print": "^2.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-vinyl-zip": "^1.4.0"
