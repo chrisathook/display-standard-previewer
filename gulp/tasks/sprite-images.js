@@ -33,7 +33,7 @@ module.exports = function (gulp, bs, options, flags) {
         cssName: '_sprite-' + options.prefix + '.scss',
         padding: 4,
         imgPath: `../${options.img_root}/` + options.prefix + '-sprite.png',
-        cssOpts: {functions: false, prefix: options.prefix + '-map', usejpg: use_jpg},
+        cssOpts: {functions: false,variableNameTransforms:[], prefix: options.prefix + '-map', usejpg: use_jpg},
         cssSpritesheetName: 'spritesheet',
         cssVarMap: function (sprite) {
           sprite.name = sprite.name;
