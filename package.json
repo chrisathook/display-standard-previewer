@@ -50,6 +50,10 @@
     "gulp-inline-source": "^3.0.0",
     "gulp-print": "^2.0.1",
     "gulp-rename": "^1.2.2",
-    "gulp-vinyl-zip": "^1.4.0"
+    "gulp-vinyl-zip": "^1.4.0",
+    "gulp-flatten": "^0.3.1"
+  },
+  "devDependencies": {
+
   }
 }

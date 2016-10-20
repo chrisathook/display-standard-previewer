@@ -6,6 +6,7 @@
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var util = require('gulp-util');
+var flatten = require('gulp-flatten');
 /**
  * @param gulp - function
  * @param bs - Browser sync instance
@@ -23,6 +24,7 @@ module.exports = function (gulp, bs, options, flags) {
     try {
       return gulp.src(options.src)
         .pipe(sass({includePaths: [require("bourbon").includePaths]}).on('error', sass.logError))
+        .pipe(flatten())
         .pipe(gulp.dest(options.dist))
         .pipe(bs.stream())
         .on('error', util.log)
