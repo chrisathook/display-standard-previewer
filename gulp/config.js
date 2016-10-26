@@ -34,7 +34,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
       dist: path.join(dest, `${build_dist_path}`)
     },
     sass: {
-      src: path.join(root, 'sass/**/*.scss'),
+      src: path.join(root, 'sass/**/style.scss'),
       watch_src: [path.join(root, 'sass/**/*.scss'), path.join(root, '!./sass/spritesheets/**/*.scss')],
       dist: path.join(dest, 'css/')
     },

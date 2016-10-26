@@ -20,7 +20,7 @@ module.exports = function (gulp, options) {
       gulp.src(options.src)
         .pipe(jasmine({
           verbose: true
-        }));
+        }).on('error', util.log));
     };
   } catch (err) {
     util.log(err);
