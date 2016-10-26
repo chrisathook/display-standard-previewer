@@ -6,6 +6,16 @@ var path = require('path');
 
 var root = process.cwd();
 var dist = '';
+
+var bannerName = '';
+
+var pathArr = path.resolve(root);
+pathArr = pathArr.split(path.sep);
+bannerName= pathArr[pathArr.length - 1];
+
+console.log (root);
+console.log (bannerName);
+
 try {
 
   var possible = path.join(root, '_dist');
@@ -74,3 +84,18 @@ function getSpecs(){
 }
 
 getSpecs();
+
+
+describe('bundle size', function() {
+  var intendedfileSize = config.specs.fileSize;
+  it('should be smaller than ' + intendedfileSize + 'k', function() {
+
+
+
+    var zip = fs.statSync(path.join(dist,  bannerName+'.zip'));
+    var fileSize = zip['size']/1000;
+
+    expect(fileSize).not.toBeGreaterThan(intendedfileSize);
+
+  });
+});
