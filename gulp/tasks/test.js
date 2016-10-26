@@ -20,7 +20,9 @@ module.exports = function (gulp, options) {
       gulp.src(options.src)
         .pipe(jasmine({
           verbose: true
-        }).on('error', util.log));
+        }).on('error',function (){
+          util.log (  "!!! ONE OR MORE TEST FAILED !!!")
+        } ));
     };
   } catch (err) {
     util.log(err);
