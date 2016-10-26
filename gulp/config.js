@@ -109,6 +109,11 @@ module.exports = function (images_path, build_dist_path, js_path) {
         meta: path.join(dest, `${build_dist_path}`, '/index.html')
       }
     },
+    test:{
+      src:path.join(__dirname, 'test-definitions.js')
+
+    }
+    ,
     server: {
       root: dest
     }

@@ -48,6 +48,10 @@ var parseTask = function (paramArray) {
   if (paramArray.indexOf('sass') !== -1) {
     return 'sass'
   }
+  if (paramArray.indexOf('test') !== -1) {
+      return 'test'
+    }
+
   if (paramArray.indexOf('sprite') !== -1) {
     return 'sprite'
   }
