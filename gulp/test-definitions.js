@@ -37,7 +37,6 @@ try {
 var htmlPath = path.join(dist, 'index.html');
 var html = fs.readFileSync(htmlPath, 'utf8');
 
-var cssPath = path.join(dist,  '/css/style.css');
 
 
 var $ = cheerio.load(html);
@@ -108,6 +107,67 @@ describe('static image', function() {
     var dimensions = imageSize(path.join(dist,  bannerName+'.jpg'));
     expect(dimensions.width).toEqual(width);
     expect(dimensions.height).toEqual(height);
+
+  });
+});
+
+
+describe('assets', function() {
+
+  //html build and imgs
+  var assets = assetList(dist+'/');
+
+  function assetList(dir, filelist) {
+    var files = fs.readdirSync(dir);
+
+    filelist = filelist || [];
+    files.forEach(function(file) {
+      if (fs.statSync(path.join(dir , file)).isDirectory()) {
+        filelist = assetList(path.join(dir , file ), filelist);
+      }
+      else {
+        filelist.push(file);
+      }
+    });
+
+    return filelist;
+  }
+
+  function assetCheck(){
+    var missingReference = false;
+    for(var i = 0; i < assets.length; i++){
+      var asset = assets[i];
+      var referenceCount = count(html, asset)
+        if( referenceCount < 1 && asset !== '.DS_Store' && asset !== bannerName+'.jpg' && asset !== bannerName+'.zip' && asset !== 'index.html'){
+          //notifies the user in the console which assets are not used
+          console.log('!!    unused asset:', assets[i]);
+          missingReference = true;
+        }
+     }
+     return (missingReference == false)
+  }
+
+  //counts the frequency of asset used in compiled html or css
+  function count(str, subStr){
+    var matches = str.match(new RegExp(subStr, 'g'));
+    return matches ? matches.length:0;
+  }
+
+  it('should reference all assets', function(){
+
+    expect(assetCheck()).not.toEqual(false);
+
+  });
+
+  it('should have no more than 15 assets', function(){
+
+    expect(assets.length).toBeLessThan(config.specs.numFiles);
+
+  });
+
+  it('should have no http calls', function(){
+
+    expect(count(html, 'http://')).toEqual(0);
 
   });
 });
