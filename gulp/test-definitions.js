@@ -99,3 +99,15 @@ describe('bundle size', function() {
 
   });
 });
+
+describe('static image', function() {
+  var width = config.specs.width;
+  var height = config.specs.height;
+  it('should match dimensions of the creative ('+width+'x'+height+')', function() {
+
+    var dimensions = imageSize(path.join(dist,  bannerName+'.jpg'));
+    expect(dimensions.width).toEqual(width);
+    expect(dimensions.height).toEqual(height);
+
+  });
+});
