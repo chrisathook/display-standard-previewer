@@ -25,7 +25,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
         path.join(root, '/**/index.html'),
         path.join(root, `/${js_path}/**/*.js`),
         path.join(root, `/${images_path}/**/*.{gif,jpg,png,svg}`),
-        '!'+ path.join(dest, `${build_dist_path}`)
+        '!' + path.join(dest, `${build_dist_path}`)
       ]
     },
     html: {
@@ -82,15 +82,18 @@ module.exports = function (images_path, build_dist_path, js_path) {
       dist: path.join(dest, `${build_dist_path}`)
     },
     inline_clean: {
-          src: path.join(dest, `${build_dist_path}`, '/**/*.css')
-        }
+      src: path.join(dest, `${build_dist_path}`, '/**/*.css')
+    }
     ,
     optimize: {
       css: {
         src: path.join(dest, `${build_dist_path}`, '/**/*.css')
       },
       js: {
-        src: path.join(dest, `${build_dist_path}`, '/**/*.js')
+        src: [
+          path.join(dest, `${build_dist_path}`, '/**/*.js'),
+          '!' + path.join(dest, `${build_dist_path}`, '/**/*manifest.js')
+        ]
       },
       html: {
         src: path.join(dest, `${build_dist_path}`, '/**/*.html')
@@ -109,9 +112,8 @@ module.exports = function (images_path, build_dist_path, js_path) {
         meta: path.join(dest, `${build_dist_path}`, '/index.html')
       }
     },
-    test:{
-      src:path.join(__dirname, 'test-definitions.js')
-
+    test: {
+      src: path.join(__dirname, 'test-definitions.js')
     }
     ,
     server: {
