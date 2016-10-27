@@ -19,10 +19,18 @@ module.exports = function (gulp, options) {
       var d1 = new Date();
       gulp.src(options.src)
         .pipe(jasmine({
-          verbose: true
-        }).on('error',function (){
-          util.log (  "!!! ONE OR MORE TEST FAILED !!!")
-        } ));
+            verbose: true
+          })
+          .on('error', function () {
+            util.log("!!! ONE OR MORE TEST FAILED !!!")
+          })
+          .on('jasmineDone', function () {
+            var d2 = new Date();
+            var seconds = (d2 - d1) / 1000;
+            util.log('@tasks/test complete ', seconds + 's');
+            done()
+          })
+        );
     };
   } catch (err) {
     util.log(err);
