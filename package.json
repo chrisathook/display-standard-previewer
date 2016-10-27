@@ -31,6 +31,7 @@
     "gulp-contains": "^1.1.0",
     "gulp-debug": "^2.1.2",
     "gulp-exec": "^2.1.2",
+    "gulp-expect-file": "0.0.7",
     "gulp-file-include": "^0.14.0",
     "gulp-flatten": "^0.3.1",
     "gulp-htmlmin": "^3.0.0",
@@ -54,7 +55,8 @@
     "merge-stream": "^1.0.0",
     "minimist": "^1.2.0",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "yauzl": "^2.7.0"
   },
   "devDependencies": {}
 }
