@@ -16,7 +16,7 @@ try {
   var possible = path.join(root, '_dist');
   fs.accessSync(possible, fs.F_OK);
   dist = possible;
- // console.log(dist)
+  // console.log(dist)
 } catch (e) {
   // It isn't accessible
 }
@@ -24,7 +24,7 @@ try {
   var possible2 = path.join(root, 'dist');
   fs.accessSync(possible2, fs.F_OK);
   dist = possible2;
- // console.log(dist)
+  // console.log(dist)
 } catch (e) {
   // It isn't accessible
 }
@@ -61,21 +61,19 @@ function getSpecs() {
       config.specs[spec] = value;
     }
   });
- // console.log(config);
+  // console.log(config);
 }
 getSpecs();
+// tests
 describe('static location', function () {
   var location = config.specs.static;
   it('should be located ' + location, function (done) {
-
     var isInZip = false;
-          var onEnd = function () {
-            expect(isInZip).toEqual(true);
-            done()
-          };
-
+    var onEnd = function () {
+      expect(isInZip).toEqual(true);
+      done()
+    };
     if (location === 'in.zip') {
-
       yauzl.open(path.join(dist, bannerName + '.zip'), {lazyEntries: true}, function (err, zipfile) {
         if (err) throw err;
         zipfile.readEntry();
@@ -88,20 +86,15 @@ describe('static location', function () {
           zipfile.readEntry();
         });
       });
-    }else {
-
+    } else {
       var isInFolder = false;
-
       try {
         var stats = fs.statSync(path.join(dist, bannerName + '.jpg'));
         isInFolder = true;
       }
       catch (e) {
-
       }
-
       expect(isInFolder).toEqual(true);
-
       done()
     }
     //
