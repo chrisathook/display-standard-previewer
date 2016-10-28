@@ -34,6 +34,7 @@ var $ = cheerio.load(html);
 var config = {
   specs: {
     fileSize: NaN, // kilobytes
+    staticFileSize: NaN, // kilobytes
     numFiles: NaN,
     width: NaN, // px
     height: NaN, // px
@@ -112,7 +113,7 @@ describe('static location', function () {
 });
 describe('bundle size', function () {
   var intendedfileSize = config.specs.fileSize;
-  it('should be smaller than ' + intendedfileSize + 'k', function () {
+  it('should be smaller than ' + intendedfileSize + 'k'+' Static Not Counted in .zip weight' , function () {
     var zip = fs.statSync(path.join(dist, bannerName + '.zip'));
     var fileSize = zip['size'] / 1000;
     var location = config.specs.static;
@@ -121,8 +122,10 @@ describe('bundle size', function () {
       staticPath = path.join(dist, 'img', 'static' + '.jpg');
     } else if (location === 'in.zip') {
       staticPath = path.join(dist, bannerName + '.jpg');
+    } else if (location === 'in.folder') {
+      staticPath = path.join(dist, bannerName + '.jpg');
     }
-    if (staticPath !== null) {
+    if (location !== 'in.folder') {
       var staticStats = fs.statSync(staticPath);
       var staticFileSize = staticStats['size'] / 1000;
       fileSize = fileSize - staticFileSize
@@ -130,6 +133,23 @@ describe('bundle size', function () {
     expect(fileSize).not.toBeGreaterThan(intendedfileSize);
   });
 });
+describe('static size', function () {
+  var intendedfileSize = config.specs.staticFileSize;
+  it('should be smaller than ' + intendedfileSize + 'k', function () {
+    var location = config.specs.static;
+    var staticPath = null;
+    if (location === 'in.img') {
+      staticPath = path.join(dist, 'img', 'static' + '.jpg');
+    } else if (location === 'in.zip') {
+      staticPath = path.join(dist, bannerName + '.jpg');
+    } else if (location === 'in.folder') {
+      staticPath = path.join(dist, bannerName + '.jpg');
+    }
+    var staticStats = fs.statSync(staticPath);
+    var staticFileSize = staticStats['size'] / 1000;
+    expect(staticFileSize).not.toBeGreaterThan(config.specs.staticFileSize);
+  })
+})
 describe('static image', function () {
   var width = config.specs.width;
   var height = config.specs.height;
