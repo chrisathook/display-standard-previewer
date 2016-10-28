@@ -4,11 +4,13 @@ var path = require('path');
 var fs = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 var gulpTasks = require('./gulp');
+var nconf = require('nconf');
 var opts = {
   logLevel: 2,
   home: '.',
   port: 0,
-  debug: false
+  debug: false,
+  tinypngkey:null
 };
 var task = "default";
 var run = function () {
@@ -24,10 +26,26 @@ var run = function () {
     console.log(__dirname);
     console.log(argv);
   }
-  gulpTasks(opts, task)
-    .then(function () {
-      console.log('resolved')
-    })
+  nconf.env()
+        .file({file: path.join(__dirname, 'config.json')});
+
+  opts.tinypngkey = nconf.get('tinypngkey');
+
+
+  if (task !== 'set-key') {
+    gulpTasks(opts, task)
+      .then(function () {
+        console.log('resolved')
+      })
+  } else {
+
+    nconf.set('tinypngkey', argv._[1]);
+    nconf.save(function (err) {
+      fs.readFile(path.join(__dirname, 'config.json'), function (err, data) {
+        console.dir(JSON.parse(data.toString()))
+      });
+    });
+  }
 };
 var parseDebug = function (object) {
   if (object.hasOwnProperty('d')) {
@@ -49,9 +67,8 @@ var parseTask = function (paramArray) {
     return 'sass'
   }
   if (paramArray.indexOf('test') !== -1) {
-      return 'test'
-    }
-
+    return 'test'
+  }
   if (paramArray.indexOf('sprite') !== -1) {
     return 'sprite'
   }
@@ -66,6 +83,9 @@ var parseTask = function (paramArray) {
   }
   if (paramArray.indexOf('bundle') !== -1) {
     return 'bundle'
+  }
+  if (paramArray.indexOf('set-key') !== -1) {
+    return 'set-key'
   }
   return 'default'
 };

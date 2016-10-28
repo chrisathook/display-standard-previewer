@@ -21,6 +21,11 @@ If you don't have gulp 4 installed globally do the following.
 
 Since this is not an NPM module the same command is used for both install and to update.
 
+## Optional Configuration
+
+The final build step supports using the [Tinypng](https://tinypng.com) API for png optimizaiton of spritesheets. If you want to use that optimization you need to provide the system a API key by running the following command. The key will be saved locally on your machine for future use.
+
+`display-standard-previewer set-key YOUR_KEY_HERE `
 
 ## Commands
 
@@ -53,7 +58,7 @@ The .css sheet will be inlined by default when built. If you don't want this fea
 
 ### bundle
 
-Bundles contents of */dist* into 1 zip file for upload. Then runs a series of tests to validate the .zip and static. 
+Bundles contents of */dist* into 1 zip file for upload. Then runs a series of tests to validate the .zip and static.
 
 
 

@@ -14,14 +14,20 @@ var gulpTinifyImg = require('gulp-tinify-img')
  * options.dist : Output directory.
  * @returns {Function}
  */
-module.exports = function (gulp, options, flags) {
+module.exports = function (gulp, options, flags,tinypngkey) {
 
   try {
     return function () {
       var d1 = new Date();
         util.log('@tasks/optimize-sprite-image start ');
+
+      if (tinypngkey === 'undefined' || tinypngkey === undefined ||tinypngkey ==='' || tinypngkey === null || tinypngkey.length !==32) {
+        return gulp.src(options.sprite_image.src)
+          .pipe(gulp.dest(options.dist))
+      }
+
       return gulp.src(options.sprite_image.src)
-        .pipe(gulpTinifyImg({tinify_key: '19URTw8E53FrWs3OQ86dwcMD9oxBN8my', log: true}).on('error', util.log))
+        .pipe(gulpTinifyImg({tinify_key: tinypngkey, log: true}).on('error', util.log))
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {
