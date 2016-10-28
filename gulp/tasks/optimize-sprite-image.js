@@ -27,7 +27,7 @@ module.exports = function (gulp, options, flags,tinypngkey) {
       }
 
       return gulp.src(options.sprite_image.src)
-        .pipe(gulpTinifyImg({tinify_key: tinypngkey, log: true}).on('error', util.log))
+        .pipe(gulpTinifyImg({tinify_key: tinypngkey, log: false}).on('error', util.log))
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {

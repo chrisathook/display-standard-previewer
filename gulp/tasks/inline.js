@@ -6,6 +6,7 @@
 var util = require('gulp-util');
 var inlinesource = require('gulp-inline-source');
 var del = require('del');
+var replace = require('gulp-replace');
 /**
  * @param gulp - function
  * @param bs - Browser sync instance
@@ -24,8 +25,14 @@ module.exports = function (gulp, bs, options, flags) {
           compress: false, handlers: [
             function customjs(source, context, next) {
               if (source.fileContent && !source.content && (source.type == 'css')) {
-                //source.content = "Hey! I'm overriding the file's content!";
-                util.log("!!! path", source.filepath);
+                try {
+                  //console.log (source)
+
+                  //source.content = source.fileContent.replace(/\.\.\//g, './'); // rebase URLs
+                } catch (err) {
+                  console.log(err);
+                }
+                //util.log("!!! path", source.filepath);
                 del(source.filepath, {
                   force: true
                 }).then(function () {
@@ -37,6 +44,7 @@ module.exports = function (gulp, bs, options, flags) {
             }
           ]
         }).on('error', util.log))
+        .pipe (replace (/url\(\.\.\//g,'url(./' ))// rebase URLs
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {
