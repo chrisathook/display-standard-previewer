@@ -98,6 +98,9 @@ module.exports = function (images_path, build_dist_path, js_path) {
       html: {
         src: path.join(dest, `${build_dist_path}`, '/**/*.html')
       },
+      sprite_image: {
+              src: path.join(dest, `${build_dist_path}`, '/**/*-sprite.png')
+            },
       dist: path.join(dest, `${build_dist_path}`)
     },
     bundle: {
