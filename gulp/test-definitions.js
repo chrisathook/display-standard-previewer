@@ -86,10 +86,20 @@ describe('static location', function () {
           zipfile.readEntry();
         });
       });
-    } else {
+    } else if (location === 'in.folder') {
       var isInFolder = false;
       try {
         var stats = fs.statSync(path.join(dist, bannerName + '.jpg'));
+        isInFolder = true;
+      }
+      catch (e) {
+      }
+      expect(isInFolder).toEqual(true);
+      done()
+    } else if (location === 'in.img') {
+      var isInFolder = false;
+      try {
+        var stats = fs.statSync(path.join(dist, 'img', 'static' + '.jpg'));
         isInFolder = true;
       }
       catch (e) {
@@ -105,6 +115,18 @@ describe('bundle size', function () {
   it('should be smaller than ' + intendedfileSize + 'k', function () {
     var zip = fs.statSync(path.join(dist, bannerName + '.zip'));
     var fileSize = zip['size'] / 1000;
+    var location = config.specs.static;
+    var staticPath = null;
+    if (location === 'in.img') {
+      staticPath = path.join(dist, 'img', 'static' + '.jpg');
+    } else if (location === 'in.zip') {
+      staticPath = path.join(dist, bannerName + '.jpg');
+    }
+    if (staticPath !== null) {
+      var staticStats = fs.statSync(staticPath);
+      var staticFileSize = staticStats['size'] / 1000;
+      fileSize = fileSize - staticFileSize
+    }
     expect(fileSize).not.toBeGreaterThan(intendedfileSize);
   });
 });
@@ -112,7 +134,13 @@ describe('static image', function () {
   var width = config.specs.width;
   var height = config.specs.height;
   it('should match dimensions of the creative (' + width + 'x' + height + ')', function () {
-    var dimensions = imageSize(path.join(dist, bannerName + '.jpg'));
+    var location = config.specs.static;
+    var dimensions = null
+    if (location === 'in.img') {
+      dimensions = imageSize(path.join(dist, 'img', 'static' + '.jpg'));
+    } else {
+      dimensions = imageSize(path.join(dist, bannerName + '.jpg'));
+    }
     expect(dimensions.width).toEqual(width);
     expect(dimensions.height).toEqual(height);
   });
