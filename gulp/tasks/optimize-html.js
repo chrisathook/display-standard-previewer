@@ -18,7 +18,7 @@ module.exports = function (gulp, options, flags) {
     var d1 = new Date();
     try {
       return gulp.src(options.html.src)
-        .pipe(htmlmin({collapseWhitespace: true, removeComments: true}).on('error', util.log))
+        .pipe(htmlmin({collapseWhitespace: true,conservativeCollapse:true, removeComments: true}).on('error', util.log))
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {
