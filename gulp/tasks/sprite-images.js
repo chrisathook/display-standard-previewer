@@ -20,7 +20,10 @@ var util = require('gulp-util');
  */
 module.exports = function (gulp, bs, options, flags) {
   return function () {
-    util.log('@tasks/sprite-images start ', options.prefix);
+    var imagesDone = false;
+    var cssDone = false;
+    var inter = 0;
+    util.log('@tasks/sprite-images start ', options.prefix, options.quality);
     var d1 = new Date();
     var use_jpg = false;
     try {
@@ -33,7 +36,7 @@ module.exports = function (gulp, bs, options, flags) {
         cssName: '_sprite-' + options.prefix + '.scss',
         padding: 4,
         imgPath: `../${options.img_root}/` + options.prefix + '-sprite.png',
-        cssOpts: {functions: false,variableNameTransforms:[], prefix: options.prefix + '-map', usejpg: use_jpg},
+        cssOpts: {functions: false, variableNameTransforms: [], prefix: options.prefix + '-map', usejpg: use_jpg},
         cssSpritesheetName: 'spritesheet',
         cssVarMap: function (sprite) {
           sprite.name = sprite.name;
@@ -43,7 +46,10 @@ module.exports = function (gulp, bs, options, flags) {
       // Pipe image stream through image optimizer and onto disk
       var imgStream = spriteData.img;
       if (use_jpg === false) {
-        imgStream.pipe(gulp.dest(options.dist_img));
+        imgStream.pipe(gulp.dest(options.dist_img)).on('finish', function () {
+          console.log("!!! IMAGES DONE")
+          imagesDone = true;
+        });
       } else {
         // change file name and write png
         imgStream.pipe(rename(function (path) {
@@ -61,7 +67,12 @@ module.exports = function (gulp, bs, options, flags) {
               quality: options.quality
             }
           }).on('error', util.log))
-          .pipe(gulp.dest(options.dist_img));
+          .pipe(gulp.dest(options.dist_img))
+          .on('finish', function () {
+            console.log("!!! IMAGES DONE")
+            imagesDone = true;
+          })
+        ;
       }
     } catch (err) {
       util.log(err);
@@ -69,16 +80,36 @@ module.exports = function (gulp, bs, options, flags) {
     try {
       // Pipe CSS stream through CSS optimizer and onto disk
       var cssStream = spriteData.css
-        .pipe(gulp.dest(options.dist_css));
-      // Return a merged stream to handle both `end` events
-      return merge(imgStream, cssStream)
-        .pipe(bs.stream())
-        .on('error', util.log)
+        .pipe(gulp.dest(options.dist_css))
         .on('finish', function () {
-          var d2 = new Date();
-          var seconds = (d2 - d1) / 1000;
-          util.log('@tasks/sprite-images complete ', options.prefix, seconds + 's')
+          console.log("!!! CSS DONE")
+          cssDone = true
         })
+        ;
+      // Return a merged stream to handle both `end` events
+      return new Promise(function (resolve, reject) {
+        merge(imgStream, cssStream)
+          .pipe(bs.stream())
+          .on('error', util.log)
+          .on('finish', function () {
+            var endIt = function () {
+              var d2 = new Date();
+              var seconds = (d2 - d1) / 1000;
+              util.log('@tasks/sprite-images complete ', options.prefix, seconds + 's')
+              resolve();
+            }
+            if (cssDone === true && imagesDone === true) {
+              endIt()
+            } else {
+              inter = setInterval(function () {
+                if (cssDone === true && imagesDone === true) {
+                  clearInterval(inter);
+                  endIt()
+                }
+              }, 250)
+            }
+          })
+      })
     } catch (err) {
       util.log(err);
     }
