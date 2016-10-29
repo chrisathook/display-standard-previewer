@@ -74,7 +74,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
       dist: path.join(dest, `${build_dist_path}`)
     },
     rename_backup: {
-      src: path.join(dest, `${build_dist_path}`, '/static-backup.jpg'),
+      src: path.join(dest, `${build_dist_path}`, '/*static-backup.jpg'),
       dist: path.join(dest, `${build_dist_path}`)
     },
     inline: {
@@ -111,6 +111,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
           '!' + path.join(dest, `${build_dist_path}`, '/**/.*'),
           '!' + path.join(dest, `${build_dist_path}`, '/*.jpg')// exclude static by default
         ],
+        base:path.join(dest, `${build_dist_path}`),
         dist: path.join(dest, `${build_dist_path}`),
         meta: path.join(dest, `${build_dist_path}`, '/index.html')
       }

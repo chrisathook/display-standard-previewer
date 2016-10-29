@@ -8,6 +8,7 @@ var util = require('gulp-util');
 var fs = require("fs");
 var del = require('del');
 var path = require('path');
+var flatten = require ('gulp-flatten');
 /**
  * @param gulp - function
  * @param options - object
@@ -37,7 +38,8 @@ module.exports = function (gulp, options, flags) {
     }
     var d1 = new Date();
     try {
-      return gulp.src(opt.src)
+      return gulp.src(opt.src,{base:options.base})
+
         .pipe(zip(name).on('error', util.log))
         .pipe(gulp.dest(opt.dist)
           .on('finish', function () {
