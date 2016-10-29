@@ -7,6 +7,7 @@ var util = require('gulp-util');
 var inlinesource = require('gulp-inline-source');
 var del = require('del');
 var replace = require('gulp-replace');
+var flatten = require ('gulp-flatten');
 /**
  * @param gulp - function
  * @param bs - Browser sync instance
@@ -22,6 +23,9 @@ module.exports = function (gulp, bs, options, flags) {
     try {
       return gulp.src(options.src)
         .pipe(inlinesource({
+
+          rootpath:options.dist,
+
           compress: false, handlers: [
             function customjs(source, context, next) {
               if (source.fileContent && !source.content && (source.type == 'css')) {
@@ -45,6 +49,7 @@ module.exports = function (gulp, bs, options, flags) {
           ]
         }).on('error', util.log))
         .pipe (replace (/url\(\.\.\//g,'url(./' ))// rebase URLs
+        .pipe(flatten ())
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {

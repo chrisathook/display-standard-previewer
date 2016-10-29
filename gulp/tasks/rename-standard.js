@@ -7,6 +7,7 @@ var util = require('gulp-util');
 var rename = require("gulp-rename");
 var path = require('path');
 var del = require('del');
+var flatten = require ('gulp-flatten');
 /**
  * @param gulp - function
  * @param bs - Browser sync instance
@@ -27,6 +28,7 @@ module.exports = function (gulp, bs, options, flags) {
         .pipe(rename(function (path) {
           path.basename = name;
         }))
+        .pipe (flatten())
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {

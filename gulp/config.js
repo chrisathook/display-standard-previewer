@@ -74,7 +74,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
       dist: path.join(dest, `${build_dist_path}`)
     },
     rename_backup: {
-      src: path.join(dest, `${build_dist_path}`, '/*.jpg'),
+      src: path.join(dest, `${build_dist_path}`, '/static-backup.jpg'),
       dist: path.join(dest, `${build_dist_path}`)
     },
     inline: {
@@ -101,7 +101,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
       sprite_image: {
               src: path.join(dest, `${build_dist_path}`, '/**/*-sprite.png')
             },
-      dist: path.join(dest, `${build_dist_path}`)
+      dist: path.join(dest)
     },
     bundle: {
       default: {
