@@ -27,7 +27,7 @@ var run = function () {
     console.log(argv);
   }
   nconf.env()
-        .file({file: path.join(__dirname, 'config.json')});
+        .file({file: path.join(path.resolve( __dirname,'../'), 'config.json')    });
 
   opts.tinypngkey = nconf.get('tinypngkey');
 
@@ -41,7 +41,7 @@ var run = function () {
 
     nconf.set('tinypngkey', argv._[1]);
     nconf.save(function (err) {
-      fs.readFile(path.join(__dirname, 'config.json'), function (err, data) {
+      fs.readFile(path.join(path.resolve( __dirname,'../'), 'config.json') , function (err, data) {
         console.dir(JSON.parse(data.toString()))
       });
     });

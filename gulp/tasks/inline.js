@@ -31,8 +31,8 @@ module.exports = function (gulp, bs, options, flags) {
               if (source.fileContent && !source.content && (source.type == 'css')) {
                 try {
                   //console.log (source)
-                  console.log(options.src);
-                  console.log(source.filepath);
+                  //console.log(options.src);
+                  //console.log(source.filepath);
                   //source.content = source.fileContent.replace(/\.\.\//g, './'); // rebase URLs
                 } catch (err) {
                   console.log(err);
