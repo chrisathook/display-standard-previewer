@@ -19,7 +19,7 @@ module.exports = function (gulp, options, flags) {
       var d1 = new Date();
         util.log('@tasks/optimize-css start ');
       return gulp.src(options.css.src)
-        .pipe(cleanCSS().on('error', util.log))
+        .pipe(cleanCSS({roundingPrecision:-1 }).on('error', util.log))
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {

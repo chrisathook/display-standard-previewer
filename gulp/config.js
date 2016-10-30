@@ -79,7 +79,8 @@ module.exports = function (images_path, build_dist_path, js_path) {
     },
     inline: {
       src: path.join(dest, `${build_dist_path}`, '/index.html'),
-      dist: path.join(dest, `${build_dist_path}`)
+      root: path.join(dest, `${build_dist_path}`),
+      dist: path.join(dest)
     },
     inline_clean: {
       src: path.join(dest, `${build_dist_path}`, '/**/*.css')

@@ -7,7 +7,7 @@ var util = require('gulp-util');
 var inlinesource = require('gulp-inline-source');
 var del = require('del');
 var replace = require('gulp-replace');
-var flatten = require ('gulp-flatten');
+var flatten = require('gulp-flatten');
 /**
  * @param gulp - function
  * @param bs - Browser sync instance
@@ -22,16 +22,17 @@ module.exports = function (gulp, bs, options, flags) {
     var d1 = new Date();
     try {
       return gulp.src(options.src)
-        .pipe(inlinesource({
+        .pipe(inlinesource(
 
-          rootpath:options.dist,
-
-          compress: false, handlers: [
+          {
+            rootpath:options.root,
+            compress: false, handlers: [
             function customjs(source, context, next) {
               if (source.fileContent && !source.content && (source.type == 'css')) {
                 try {
                   //console.log (source)
-
+                  console.log(options.src);
+                  console.log(source.filepath);
                   //source.content = source.fileContent.replace(/\.\.\//g, './'); // rebase URLs
                 } catch (err) {
                   console.log(err);
@@ -47,9 +48,8 @@ module.exports = function (gulp, bs, options, flags) {
               }
             }
           ]
-        }).on('error', util.log))
-        .pipe (replace (/url\(\.\.\//g,'url(./' ))// rebase URLs
-        .pipe(flatten ())
+          }).on('error', util.log))
+        .pipe(replace(/url\(\.\.\//g, 'url(./'))// rebase URLs
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {
