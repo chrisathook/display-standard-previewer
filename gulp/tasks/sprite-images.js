@@ -47,7 +47,7 @@ module.exports = function (gulp, bs, options, flags) {
       var imgStream = spriteData.img;
       if (use_jpg === false) {
         imgStream.pipe(gulp.dest(options.dist_img)).on('finish', function () {
-          console.log("!!! IMAGES DONE")
+         // console.log("!!! IMAGES DONE")
           imagesDone = true;
         });
       } else {
@@ -69,7 +69,7 @@ module.exports = function (gulp, bs, options, flags) {
           }).on('error', util.log))
           .pipe(gulp.dest(options.dist_img))
           .on('finish', function () {
-            console.log("!!! IMAGES DONE")
+          //  console.log("!!! IMAGES DONE")
             imagesDone = true;
           })
         ;
@@ -82,7 +82,7 @@ module.exports = function (gulp, bs, options, flags) {
       var cssStream = spriteData.css
         .pipe(gulp.dest(options.dist_css))
         .on('finish', function () {
-          console.log("!!! CSS DONE")
+          //console.log("!!! CSS DONE")
           cssDone = true
         })
         ;

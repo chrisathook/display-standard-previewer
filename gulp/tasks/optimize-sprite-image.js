@@ -22,10 +22,14 @@ module.exports = function (gulp, options, flags,tinypngkey) {
         util.log('@tasks/optimize-sprite-image start ');
 
       if (tinypngkey === 'undefined' || tinypngkey === undefined ||tinypngkey ==='' || tinypngkey === null || tinypngkey.length !==32) {
+
+        util.log('@tasks/optimize-sprite-image Skipping TinyPNG ');
+
         return gulp.src(options.sprite_image.src)
           .pipe(gulp.dest(options.dist))
       }
 
+      util.log('@tasks/optimize-sprite-image Using TinyPNG ');
       return gulp.src(options.sprite_image.src)
         .pipe(gulpTinifyImg({tinify_key: tinypngkey, log: false}).on('error', util.log))
         .pipe(gulp.dest(options.dist))
