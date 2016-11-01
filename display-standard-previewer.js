@@ -87,6 +87,10 @@ var parseTask = function (paramArray) {
   if (paramArray.indexOf('set-key') !== -1) {
     return 'set-key'
   }
+  if (paramArray.indexOf('tinypng') !== -1) {
+      return 'tinypng'
+    }
+
   return 'default'
 };
 run();

@@ -19,7 +19,6 @@ checkTemplateType();
 module.exports = function (opts, task) {
 
   //console.log ("111",opts)
-
   return new Promise(function (resolve, reject) {
     var d1 = new Date();
     util.log('ALL tasks Start');
@@ -57,7 +56,7 @@ module.exports = function (opts, task) {
     gulp.task('optimize-css', require('./tasks/optimize-css')(gulp, config.optimize, config.flags));
     gulp.task('optimize-js', require('./tasks/optimize-js')(gulp, config.optimize, config.flags));
     gulp.task('optimize-html', require('./tasks/optimize-html')(gulp, config.optimize, config.flags));
-    gulp.task('optimize-sprite-image', require('./tasks/optimize-sprite-image')(gulp, config.optimize, config.flags,opts.tinypngkey));
+    gulp.task('optimize-sprite-image', require('./tasks/optimize-sprite-image')(gulp, config.optimize, config.flags, opts.tinypngkey));
     gulp.task('scripts-vendor', require('./tasks/scripts-vendor')(gulp, bs, config.html, config.flags));
     gulp.task('bundle', require('./tasks/bundle-default')(gulp, config.bundle.default, config.flags));
     gulp.task('inline', require('./tasks/inline')(gulp, bs, config.inline, config.flags));
@@ -97,6 +96,8 @@ module.exports = function (opts, task) {
       gulp.series('sass', 'resolve').call();
     } else if (task === 'test') {
       gulp.series('test', 'resolve').call();
+    } else if (task === 'tinypng') {
+      gulp.series('optimize-sprite-image', 'resolve').call();
     } else if (task === 'sprite') {
       gulp.series('sprite-all', 'resolve').call();
     } else if (task === 'build') {
@@ -108,14 +109,12 @@ module.exports = function (opts, task) {
         'optimize-html',
         'optimize-sprite-image',
         'rename-standard'
-
       ), 'inline', 'resolve').call();
-
       //gulp.series('prod', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel('optimize-css', 'optimize-js', 'optimize-html','optimize-sprite-image', 'rename-standard'), 'inline',  'resolve').call();
     } else if (task === 'default') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
     } else if (task === 'bundle') {
-      gulp.series('bundle','test', 'resolve').call();
+      gulp.series('bundle', 'test', 'resolve').call();
     } else {
       resolve()
     }
