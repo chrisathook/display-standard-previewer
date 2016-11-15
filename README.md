@@ -56,7 +56,7 @@ Runs *build* then compiles all the source into /_dist with minification. If ther
 
 The .css sheet will be inlined by default when built. If you don't want this feature remove the `inline` param from the CSS <link> tag in the index.html.
 
-The spritesheets images are automatically minified with the TinyPNG api if you have set up an API Key. 
+The spritesheets images are automatically minified with the TinyPNG api if you have set up an API Key.
 
 ### bundle
 
