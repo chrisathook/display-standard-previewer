@@ -15,9 +15,9 @@ var checkTemplateType = function () {
     config = config();
   }
 };
-checkTemplateType();
-module.exports = function (opts, task) {
 
+module.exports = function (opts, task) {
+  checkTemplateType();
   //console.log ("111",opts)
   return new Promise(function (resolve, reject) {
     var d1 = new Date();

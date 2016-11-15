@@ -5,6 +5,7 @@ var fs = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 var gulpTasks = require('./gulp');
 var nconf = require('nconf');
+var os= require ('os')
 var opts = {
   logLevel: 2,
   home: '.',
@@ -27,7 +28,7 @@ var run = function () {
     console.log(argv);
   }
   nconf.env()
-        .file({file: path.join(path.resolve( __dirname,'../'), 'display-standard-previewer-config.json')    });
+        .file({file: path.join(path.resolve(os.homedir()), 'display-standard-previewer-config.json')    });
 
   opts.tinypngkey = nconf.get('tinypngkey');
 
@@ -38,10 +39,12 @@ var run = function () {
         console.log('resolved')
       })
   } else {
-
+  
+    console.log('SET KEY');
+    console.log (os.homedir());
     nconf.set('tinypngkey', argv._[1]);
     nconf.save(function (err) {
-      fs.readFile(path.join(path.resolve( __dirname,'../'), 'display-standard-previewer-config.json') , function (err, data) {
+      fs.readFile(path.join(path.resolve( os.homedir()), 'display-standard-previewer-config.json') , function (err, data) {
         console.dir(JSON.parse(data.toString()))
       });
     });
