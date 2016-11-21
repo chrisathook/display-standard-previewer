@@ -6,6 +6,7 @@
 var useref = require('gulp-useref');
 var source = require('vinyl-source-stream');
 var util = require('gulp-util');
+var lec = require ('gulp-line-ending-corrector')
 /**
  * @param gulp - function
  * @param bs - Browser sync instance
@@ -23,6 +24,7 @@ module.exports = function (gulp, bs, options, flags) {
     var d1 = new Date();
     try {
       return gulp.src(options.entry)
+        .pipe(lec())
         .pipe(useref().on('error', util.log))
         .pipe(gulp.dest(options.dist))
         .pipe(bs.stream()).on('error', util.log)
