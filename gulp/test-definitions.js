@@ -206,6 +206,7 @@ describe('assets', function () {
     var missingAsset = false;
 
     var images = [];
+    var imagePaths = [];
 
     // get all images from css
     var regex = /url\s*\(['|"]*([\s\S]*?)["|']*\)/gm;
@@ -214,7 +215,7 @@ describe('assets', function () {
       var match = regex.exec(html)[1];
       var isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
       if(isImage) {
-        match = match.replace('../', './');
+        imagePaths.push(match);
         match = path.join(dist, match);
         images.push(match);
       }
@@ -227,6 +228,7 @@ describe('assets', function () {
       var match = regex.exec(html)[1];
       var isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
       if(isImage) {
+        imagePaths.push(match);
         match = path.join(dist, match);
         images.push(match);
       }
@@ -236,13 +238,17 @@ describe('assets', function () {
       return index == self.indexOf(elem);
     });
 
+    imagePaths = imagePaths.filter(function(elem, index, self) { // remove duplicates
+      return index == self.indexOf(elem);
+    });
+
     for(var i in images){
       var image = images[i];
       var exists = fs.existsSync(image);
 
       if(exists == false) {
         console.log('\x1b[31m%s\x1b[0m', '!!    missing asset is referenced in HTML or CSS but not in the bundle:');
-        console.log('\x1b[31m%s\x1b[0m', String ( image));
+        console.log('\x1b[31m%s\x1b[0m', String ( imagePaths[i] ));
         missingAsset = true;
       }
     }
