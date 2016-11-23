@@ -5,6 +5,7 @@
 'use strict';
 var htmlmin = require('gulp-htmlmin');
 var util = require('gulp-util');
+var flatten = require('gulp-flatten');
 /**
  * @param gulp - function
  * @param options - object
@@ -19,6 +20,7 @@ module.exports = function (gulp, options, flags) {
     try {
       return gulp.src(options.html.src)
         .pipe(htmlmin({collapseWhitespace: true,conservativeCollapse:true, removeComments: true}).on('error', util.log))
+        .pipe (flatten())
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {

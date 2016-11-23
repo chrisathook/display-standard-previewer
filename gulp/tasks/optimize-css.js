@@ -5,6 +5,7 @@
 'use strict';
 var cleanCSS = require('gulp-clean-css');
 var util = require('gulp-util');
+var flatten = require('gulp-flatten');
 /**
  * @param gulp - function
  * @param options - object
@@ -20,6 +21,7 @@ module.exports = function (gulp, options, flags) {
         util.log('@tasks/optimize-css start ');
       return gulp.src(options.css.src)
         .pipe(cleanCSS({roundingPrecision:-1 }).on('error', util.log))
+        .pipe (flatten({ includeParents: -1}))
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {

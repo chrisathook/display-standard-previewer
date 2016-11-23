@@ -4,6 +4,7 @@ var fs = require('fs');
 var cheerio = require('cheerio');
 var path = require('path');
 var yauzl = require("yauzl");
+var colors = require('colors');
 var root = process.cwd();
 var dist = '';
 var bannerName = '';
@@ -214,7 +215,6 @@ describe('assets', function () {
       var match = regex.exec(html)[1];
       var isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
       if(isImage) {
-        //match = match.replace('../', './');
         imagePaths.push(match);
         match = path.join(dist, match);
         images.push(match);
@@ -247,7 +247,8 @@ describe('assets', function () {
       var exists = fs.existsSync(image);
 
       if(exists == false) {
-        console.log('!!    missing asset:', imagePaths[i]);
+        console.log('\x1b[31m%s\x1b[0m', '!!    missing asset is referenced in HTML or CSS but not in the bundle:');
+        console.log('\x1b[31m%s\x1b[0m', String ( imagePaths[i] ));
         missingAsset = true;
       }
     }

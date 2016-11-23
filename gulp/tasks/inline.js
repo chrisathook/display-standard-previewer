@@ -50,6 +50,7 @@ module.exports = function (gulp, bs, options, flags) {
           ]
           }).on('error', util.log))
         .pipe(replace(/url\(\.\.\//g, 'url(./'))// rebase URLs
+        .pipe(flatten())
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {

@@ -80,7 +80,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
     inline: {
       src: path.join(dest, `${build_dist_path}`, '/index.html'),
       root: path.join(dest, `${build_dist_path}`),
-      dist: path.join(dest)
+      dist: path.join(dest, `${build_dist_path}`)
     },
     inline_clean: {
       src: path.join(dest, `${build_dist_path}`, '/**/*.css')
@@ -105,7 +105,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
                 path.join(dest, `${build_dist_path}`, '/**/*-sprite.jpg')
               ]
             },
-      dist: path.join(dest)
+      dist: path.join(dest, `${build_dist_path}`)
     },
     bundle: {
       default: {

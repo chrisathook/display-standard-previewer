@@ -6,7 +6,8 @@
 
 var util = require('gulp-util');
 
-var gulpTinifyImg = require('gulp-tinify-img')
+var gulpTinifyImg = require('gulp-tinify-img');
+var flatten = require('gulp-flatten');
 /**
  * @param gulp - function
  * @param options - object
@@ -26,12 +27,14 @@ module.exports = function (gulp, options, flags,tinypngkey) {
         util.log('@tasks/optimize-sprite-image Skipping TinyPNG ');
 
         return gulp.src(options.sprite_image.src)
+          .pipe (flatten({ includeParents: -1}))
           .pipe(gulp.dest(options.dist))
       }
 
       util.log('@tasks/optimize-sprite-image Using TinyPNG ');
       return gulp.src(options.sprite_image.src)
         .pipe(gulpTinifyImg({tinify_key: tinypngkey, log: false}).on('error', util.log))
+        .pipe (flatten({ includeParents: -1}))
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {

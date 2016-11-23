@@ -120,3 +120,12 @@ module.exports = function (opts, task) {
     }
   });
 };
+
+/*
+ ,
+ 'optimize-js',
+ 'optimize-html',
+ 'optimize-sprite-image',
+ 'rename-standard'
+ 'inline',
+* */

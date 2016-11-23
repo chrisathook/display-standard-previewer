@@ -5,6 +5,7 @@
 'use strict';
 var uglify = require('gulp-uglify');
 var util = require('gulp-util');
+var flatten = require('gulp-flatten');
 /**
  * @param gulp - function
  * @param options - object
@@ -19,6 +20,7 @@ module.exports = function (gulp, options, flags) {
     try {
       return gulp.src(options.js.src)
         .pipe(uglify({'compress': {'drop_console': !flags.sourcemap}}).on('error', util.log))
+        .pipe (flatten())
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {
