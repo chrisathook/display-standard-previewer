@@ -184,7 +184,8 @@ describe('assets', function () {
     return filelist;
   }
 
-  function assetCheck() {
+  function extraAssetCheck() {
+
     var missingReference = false;
     for (var i = 0; i < assets.length; i++) {
       var asset = assets[i];
@@ -195,7 +196,56 @@ describe('assets', function () {
         missingReference = true;
       }
     }
+
     return (missingReference == false)
+  }
+
+  function missingAssetCheck() {
+
+    var missingAsset = false;
+
+    var images = [];
+
+    // get all images from css
+    var regex = /url\s*\(['|"]*([\s\S]*?)["|']*\)/gm;
+    var matches = html.match(regex).length;
+    while(matches--){
+      var match = regex.exec(html)[1];
+      var isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
+      if(isImage) {
+        match = match.replace('../', './');
+        match = path.join(dist, match);
+        images.push(match);
+      }
+    }
+
+    // get all source references
+    regex = / src=['|"]*([\s\S]*?)["|']*(>|\/>|\s)/gm; 
+    matches = html.match(regex).length;
+    while(matches--){
+      var match = regex.exec(html)[1];
+      var isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
+      if(isImage) {
+        match = path.join(dist, match);
+        images.push(match);
+      }
+    }
+
+    images = images.filter(function(elem, index, self) { // remove duplicates
+      return index == self.indexOf(elem);
+    });
+
+    for(var i in images){
+      var image = images[i];
+      var exists = fs.existsSync(image);
+
+      if(exists == false) {
+        console.log('!!    missing asset:', image);
+        missingAsset = true;
+      }
+    }
+    
+    return (missingAsset == false)
   }
 
   //counts the frequency of asset used in compiled html or css
@@ -204,8 +254,11 @@ describe('assets', function () {
     return matches ? matches.length : 0;
   }
 
-  it('should reference all assets', function () {
-    expect(assetCheck()).not.toEqual(false);
+  it('should have no unused assets', function () {
+    expect(extraAssetCheck()).not.toEqual(false);
+  });
+  it('should have no missing assets', function () {
+    expect(missingAssetCheck()).not.toEqual(false);
   });
   it('should have no more than 15 assets', function () {
     expect(assets.length).toBeLessThan(config.specs.numFiles);
