@@ -109,7 +109,7 @@ module.exports = function (opts, task) {
         'optimize-html',
         'optimize-sprite-image',
         'rename-standard'
-      ),  'resolve').call();
+      ), 'inline', 'resolve').call();
       //gulp.series('prod', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel('optimize-css', 'optimize-js', 'optimize-html','optimize-sprite-image', 'rename-standard'), 'inline',  'resolve').call();
     } else if (task === 'default') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
