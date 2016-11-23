@@ -4,6 +4,7 @@ var fs = require('fs');
 var cheerio = require('cheerio');
 var path = require('path');
 var yauzl = require("yauzl");
+var colors = require('colors');
 var root = process.cwd();
 var dist = '';
 var bannerName = '';
@@ -240,7 +241,8 @@ describe('assets', function () {
       var exists = fs.existsSync(image);
 
       if(exists == false) {
-        console.log('!!    missing asset:', image);
+        console.log('\x1b[31m%s\x1b[0m', '!!    missing asset is referenced in HTML or CSS but not in the bundle:');
+        console.log('\x1b[31m%s\x1b[0m', String ( image));
         missingAsset = true;
       }
     }
