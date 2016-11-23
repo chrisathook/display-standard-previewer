@@ -105,7 +105,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
                 path.join(dest, `${build_dist_path}`, '/**/*-sprite.jpg')
               ]
             },
-      dist: path.join(dest)
+      dist: path.join(dest, `${build_dist_path}`)
     },
     bundle: {
       default: {

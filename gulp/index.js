@@ -104,12 +104,8 @@ module.exports = function (opts, task) {
       gulp.series('sprite-all', 'sass', 'resolve').call();
     } else if (task === 'build-dist') {
       gulp.series('prod', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel(
-        'optimize-css',
-        'optimize-js',
-        'optimize-html',
-        'optimize-sprite-image',
-        'rename-standard'
-      ), 'inline', 'resolve').call();
+        'optimize-css'
+      ),  'resolve').call();
       //gulp.series('prod', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel('optimize-css', 'optimize-js', 'optimize-html','optimize-sprite-image', 'rename-standard'), 'inline',  'resolve').call();
     } else if (task === 'default') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
@@ -120,3 +116,12 @@ module.exports = function (opts, task) {
     }
   });
 };
+
+/*
+ ,
+ 'optimize-js',
+ 'optimize-html',
+ 'optimize-sprite-image',
+ 'rename-standard'
+ 'inline',
+* */
