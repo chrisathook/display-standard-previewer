@@ -47,7 +47,8 @@ module.exports = function (images_path, build_dist_path, js_path) {
         dist_css: path.join(root, '/sass/spritesheets'),
         prefix: 'collapsed-foreground',
         jpg_conversion: false,
-        quality: 60
+        quality: 60,
+        dist: path.join(dest, 'index.html')
       },
       collapsed_background: {
         src: path.join(root, '_toSprite/collapsed/background/**/*.png'),
@@ -57,7 +58,8 @@ module.exports = function (images_path, build_dist_path, js_path) {
         dist_css: path.join(root, '/sass/spritesheets'),
         prefix: 'collapsed-background',
         jpg_conversion: true,
-        quality: 60
+        quality: 60,
+        dist: path.join(dest, 'index.html')
       }
     },
     build: {

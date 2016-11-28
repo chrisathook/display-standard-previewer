@@ -5,7 +5,7 @@ var fs = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 var gulpTasks = require('./gulp');
 var nconf = require('nconf');
-var os= require ('os')
+var os= require ('os');
 var opts = {
   logLevel: 2,
   home: '.',

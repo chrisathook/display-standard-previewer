@@ -10,6 +10,8 @@ var buffer = require('vinyl-buffer');
 var rename = require('gulp-simple-rename');
 var path = require('path');
 var util = require('gulp-util');
+var cheerio = require('cheerio');
+var fs = require('fs');
 /**
  * @param gulp - function
  * @param bs - Browser sync instance
@@ -20,6 +22,25 @@ var util = require('gulp-util');
  */
 module.exports = function (gulp, bs, options, flags) {
   return function () {
+    try {
+      var htmlPath = options.dist;
+      var html = fs.readFileSync(htmlPath, 'utf8');
+      var $ = cheerio.load(html);
+      var metaTags = $('meta');
+      metaTags.each(function (i, tag) {
+        var name = tag.attribs['name'];
+        var content = tag.attribs['content'];
+        if (!name) return;
+        console.log(name);
+        if (name.indexOf('ad.compression') !== -1) {
+          var value = Number(content) || content;
+          options.quality = value
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      console.error(err.stack);
+    }
     var imagesDone = false;
     var cssDone = false;
     var inter = 0;
@@ -47,7 +68,7 @@ module.exports = function (gulp, bs, options, flags) {
       var imgStream = spriteData.img;
       if (use_jpg === false) {
         imgStream.pipe(gulp.dest(options.dist_img)).on('finish', function () {
-         // console.log("!!! IMAGES DONE")
+          // console.log("!!! IMAGES DONE")
           imagesDone = true;
         });
       } else {
@@ -69,7 +90,7 @@ module.exports = function (gulp, bs, options, flags) {
           }).on('error', util.log))
           .pipe(gulp.dest(options.dist_img))
           .on('finish', function () {
-          //  console.log("!!! IMAGES DONE")
+            //  console.log("!!! IMAGES DONE")
             imagesDone = true;
           })
         ;
