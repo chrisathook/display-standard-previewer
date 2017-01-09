@@ -134,6 +134,49 @@ describe('bundle size', function () {
     expect(fileSize).not.toBeGreaterThan(intendedfileSize);
   });
 });
+describe('Spritesheet PNGs', function () {
+  it('should have dimensions that are a multiple of 4' , function () {
+    var intendedfileSize = config.specs.fileSize;
+
+    var pngDir = path.join(root, '_toSprite');
+    var images = assetList(pngDir).filter( function(e) { 
+      return e.indexOf('.png') != -1 
+    });
+
+    var badImages = images.filter(function(e) {
+
+      var dimensions = imageSize(e);
+
+      if(dimensions.width % 4 != 0 || dimensions.height % 4 != 0) {
+
+        var goodW = Math.ceil(dimensions.width/4)*4;
+        var goodH = Math.ceil(dimensions.height/4)*4;
+
+        console.log('!!    wrong dimensions:', e);
+        console.log('!!    is: ' + dimensions.width + 'x' + dimensions.height );
+        console.log('!!    should be: ' + goodW + 'x' + goodH );
+
+        return true;
+      }
+    });
+
+    function assetList(dir, filelist) {
+      var files = fs.readdirSync(dir);
+      filelist = filelist || [];
+      files.forEach(function (file) {
+        if (fs.statSync(path.join(dir, file)).isDirectory()) {
+          filelist = assetList(path.join(dir, file), filelist);
+        }
+        else {
+          filelist.push(path.join(dir, file));
+        }
+      });
+      return filelist;
+    }
+  
+    expect(badImages.length).toEqual(0);
+  });
+});
 describe('static size', function () {
   var intendedfileSize = config.specs.staticFileSize;
   it('should be smaller than ' + intendedfileSize + 'k', function () {
@@ -150,7 +193,7 @@ describe('static size', function () {
     var staticFileSize = staticStats['size'] / 1000;
     expect(staticFileSize).not.toBeGreaterThan(config.specs.staticFileSize);
   })
-})
+});
 describe('static image', function () {
   var width = config.specs.width;
   var height = config.specs.height;
