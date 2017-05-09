@@ -61,6 +61,7 @@ module.exports = function (opts, task) {
     gulp.task('bundle', require('./tasks/bundle-default')(gulp, config.bundle.default, config.flags));
     gulp.task('inline', require('./tasks/inline')(gulp, bs, config.inline, config.flags));
     gulp.task('inline-clean', require('./tasks/clean')(gulp, config.inline_clean));
+    gulp.task('inline-svg', require('./tasks/inline-svg')(gulp, config.inline_svg));
     gulp.task('test', require('./tasks/test')(gulp, config.test));
     // define watch actions
     gulp.task('watch', function (done) {
@@ -94,7 +95,10 @@ module.exports = function (opts, task) {
       bs.exit();
     } else if (task === 'sass') {
       gulp.series('sass', 'resolve').call();
-    } else if (task === 'test') {
+    } else if (task === 'inline-svg') {
+      gulp.series('inline-svg', 'resolve').call();
+    }
+    else if (task === 'test') {
       gulp.series('test', 'resolve').call();
     } else if (task === 'tinypng') {
       gulp.series('optimize-sprite-image', 'resolve').call();

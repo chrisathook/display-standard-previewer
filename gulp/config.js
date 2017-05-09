@@ -1,7 +1,7 @@
 'use strict';
-var dest = process.cwd();
-var root = process.cwd();
-var path = require('path');
+const dest = process.cwd();
+const root = process.cwd();
+const path = require('path');
 module.exports = function (images_path, build_dist_path, js_path) {
   if (images_path === undefined || images_path === 'undefined') {
     images_path = 'images';
@@ -86,8 +86,10 @@ module.exports = function (images_path, build_dist_path, js_path) {
     },
     inline_clean: {
       src: path.join(dest, `${build_dist_path}`, '/**/*.css')
-    }
-    ,
+    },inline_svg: {
+      src: path.join(root, '_svgs', '/**/*.svg'),
+      dist: path.join(dest, `${js_path}`,'svglib.js')
+    },
     optimize: {
       css: {
         src: path.join(dest, `${build_dist_path}`, '/**/*.css')
