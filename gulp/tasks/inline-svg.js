@@ -50,13 +50,14 @@ module.exports = function (gulp, options, flags) {
             
             gulp.src(options.template)
               .pipe(replace(/DATA_HERE/, item,replaceOptions))
+              .pipe(replace(/http:\/\//g, 'https://',replaceOptions))
               .pipe (flatten())
               .pipe(gulp.dest(options.dist))
               .on('error', util.log)
               .on('finish', function () {
                 let d2 = new Date();
                 let seconds = (d2 - d1) / 1000;
-                util.log('@tasks/inline-svg complete ', seconds + 's')
+                util.log('@tasks/inline-svg complete ', seconds + 's');
                 resolve();
               });
           })
