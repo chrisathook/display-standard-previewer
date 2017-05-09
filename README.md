@@ -40,6 +40,10 @@ Compiles the .scss files into .css
 
 Compiles all the images in /_toSprite into spritesheets and generates the necessary .scss partials in /sass/spritesheets. Final spritesheets are placed in /images.
 
+### inline-svg
+
+Copies data from all svgs in */_svgs* into */libs/svglib.js* for inclusion in divs in index.html. Svg filename must match target div ID.
+
 ### build
 
 Runs *sprite* then *sass*
