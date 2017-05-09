@@ -24,6 +24,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
       src: [
         path.join(root, '/**/index.html'),
         path.join(root, `/${js_path}/**/*.js`),
+        path.join(root, '_svgs', '/**/*.svg'),
         path.join(root, `/${images_path}/**/*.{gif,jpg,png,svg}`),
         '!' + path.join(dest, `${build_dist_path}`)
       ]
