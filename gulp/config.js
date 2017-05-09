@@ -86,9 +86,11 @@ module.exports = function (images_path, build_dist_path, js_path) {
     },
     inline_clean: {
       src: path.join(dest, `${build_dist_path}`, '/**/*.css')
-    },inline_svg: {
+    },
+    inline_svg: {
       src: path.join(root, '_svgs', '/**/*.svg'),
-      dist: path.join(dest, `${js_path}`,'svglib.js')
+      template: path.join(root, '_svgs', 'svglib.js'),
+      dist: path.join(dest, `${js_path}`)
     },
     optimize: {
       css: {
