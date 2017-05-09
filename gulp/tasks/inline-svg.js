@@ -37,8 +37,11 @@ module.exports = function (gulp, options, flags) {
           .on('error', util.log)
           .on('finish', function () {
             //console.log(data);
+            
+            let item = JSON.stringify(data);
+            
             gulp.src(options.template)
-              .pipe(replace(/DATA_HERE/, data))
+              .pipe(replace(/DATA_HERE/, item))
               .pipe(gulp.dest(options.dist))
               .on('error', util.log)
               .on('finish', function () {
