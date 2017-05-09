@@ -9,6 +9,7 @@ const flatten = require('gulp-flatten');
 const textTransformation = require('gulp-text-simple');
 const path = require('path');
 const replace = require('gulp-string-replace');
+
 /**
  * @param gulp - function
  * @param options - object
@@ -39,9 +40,17 @@ module.exports = function (gulp, options, flags) {
             //console.log(data);
             
             let item = JSON.stringify(data);
+  
+            let replaceOptions = {
+              logs: {
+                enabled: false
+              }
+            };
+            
             
             gulp.src(options.template)
-              .pipe(replace(/DATA_HERE/, item))
+              .pipe(replace(/DATA_HERE/, item,replaceOptions))
+              .pipe (flatten())
               .pipe(gulp.dest(options.dist))
               .on('error', util.log)
               .on('finish', function () {
