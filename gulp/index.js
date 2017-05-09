@@ -90,7 +90,7 @@ module.exports = function (opts, task) {
       done();
     });
     if (task === 'watch') {
-      gulp.series('sprite-all', 'sass', 'watch').call();
+      gulp.series('inline-svg','sprite-all', 'sass', 'watch').call();
     } else if (task === 'end-watch') {
       bs.exit();
     } else if (task === 'sass') {
@@ -107,7 +107,7 @@ module.exports = function (opts, task) {
     } else if (task === 'build') {
       gulp.series('sprite-all', 'sass', 'resolve').call();
     } else if (task === 'build-dist') {
-      gulp.series('prod', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel(
+      gulp.series('prod','inline-svg', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel(
         'optimize-css',
         'optimize-js',
         'optimize-html',
@@ -116,7 +116,7 @@ module.exports = function (opts, task) {
       ), 'inline', 'resolve').call();
       //gulp.series('prod', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel('optimize-css', 'optimize-js', 'optimize-html','optimize-sprite-image', 'rename-standard'), 'inline',  'resolve').call();
     } else if (task === 'default') {
-      gulp.series('sprite-all', 'sass', 'resolve').call();
+      gulp.series('inline-svg','sprite-all', 'sass', 'resolve').call();
     } else if (task === 'bundle') {
       gulp.series('bundle', 'test', 'resolve').call();
     } else {

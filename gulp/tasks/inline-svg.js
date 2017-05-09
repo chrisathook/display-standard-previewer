@@ -43,7 +43,7 @@ module.exports = function (gulp, options, flags) {
   
             let replaceOptions = {
               logs: {
-                enabled: false
+                enabled: true
               }
             };
             
