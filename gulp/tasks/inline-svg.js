@@ -51,6 +51,7 @@ module.exports = function (gulp, options, flags) {
             gulp.src(options.template)
               .pipe(replace(/DATA_HERE/, item,replaceOptions))
               .pipe(replace(/http:\/\//g, 'https://',replaceOptions))
+              .pipe(replace(/'/g, '"',replaceOptions))
               .pipe (flatten())
               .pipe(gulp.dest(options.dist))
               .on('error', util.log)
