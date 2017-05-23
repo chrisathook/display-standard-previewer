@@ -87,6 +87,7 @@ module.exports = function (opts, task) {
       gulp.watch(config.sprite.collapsed_foreground.src, gulp.series('sprite-collapsed-foreground'));
       gulp.watch(config.sprite.collapsed_background.src, gulp.series('sprite-collapsed-background'));
       gulp.watch(config.reload.src, gulp.series('reload'));
+      gulp.watch(config.inline_svg.src, gulp.series('inline-svg','reload'));
       done();
     });
     if (task === 'watch') {
