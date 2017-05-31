@@ -253,7 +253,17 @@ describe('assets', function () {
 
     // get all images from css
     var regex = /url\s*\(['|"]*([\s\S]*?)["|']*\)/gm;
-    var matches = html.match(regex).length;
+    var matches =0;
+    
+    
+    try {
+      matches  = html.match(regex).length;
+    }catch (err){
+      
+      console.log ('!!!! no images',matches)
+    }
+    
+    
     while(matches--){
       var match = regex.exec(html)[1];
       var isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
