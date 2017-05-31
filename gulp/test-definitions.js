@@ -302,7 +302,15 @@ describe('assets', function () {
   //counts the frequency of asset used in compiled html or css
   function count(str, subStr) {
     var matches = str.match(new RegExp(subStr, 'g'));
-    return matches ? matches.length : 0;
+    
+    try {
+      return matches ? matches.length : 0;
+    }catch (err) {
+      
+      return 0;
+    }
+    
+    
   }
 
   it('should have no unused assets', function () {
