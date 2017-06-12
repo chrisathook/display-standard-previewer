@@ -35,7 +35,7 @@ module.exports = function (gulp, options, flags) {
         let name = tag.attribs['name'];
         let content = tag.attribs['content'];
         if (!name) return;
-        util.log('!!! META',name);
+        //util.log('!!! META',name);
         
         if (name.indexOf('ad.minifyhtml') !== -1) {
           
