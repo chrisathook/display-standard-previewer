@@ -20,40 +20,31 @@ module.exports = function (gulp, options, flags) {
     util.log('@tasks/optimize-html start ');
     let d1 = new Date();
     try {
-  
-      
-  
       var htmlPath = options.html.entry;
       var html = fs.readFileSync(htmlPath, 'utf8');
-      
       let $ = cheerio.load(html);
       let metaTags = $('meta');
-  
-      
       let value = true;
       metaTags.each(function (i, tag) {
         let name = tag.attribs['name'];
         let content = tag.attribs['content'];
         if (!name) return;
         //util.log('!!! META',name);
-        
         if (name.indexOf('ad.minifyhtml') !== -1) {
-          
-          
-          if (content ==='false') {
-  
+          if (content === 'false') {
             value = false
           }
-          
-        }else {
+        } else {
           value = true;
-          
         }
       });
-      
       return gulp.src(options.html.src)
-        .pipe(htmlmin({collapseWhitespace: value,conservativeCollapse:true, removeComments: true}).on('error', util.log))
-        .pipe (flatten())
+        .pipe(htmlmin({
+          collapseWhitespace: value,
+          conservativeCollapse: true,
+          removeComments: true
+        }).on('error', util.log))
+        .pipe(flatten())
         .pipe(gulp.dest(options.dist))
         .on('error', util.log)
         .on('finish', function () {
