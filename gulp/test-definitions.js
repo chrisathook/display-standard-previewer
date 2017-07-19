@@ -1,20 +1,20 @@
 "use strict";
-var imageSize = require('image-size');
-var fs = require('fs');
-var cheerio = require('cheerio');
-var path = require('path');
-var yauzl = require("yauzl");
-var colors = require('colors');
-var root = process.cwd();
-var dist = '';
-var bannerName = '';
-var pathArr = path.resolve(root);
+let imageSize = require('image-size');
+let fs = require('fs');
+let cheerio = require('cheerio');
+let path = require('path');
+let yauzl = require("yauzl");
+let colors = require('colors');
+let root = process.cwd();
+let dist = '';
+let bannerName = '';
+let pathArr = path.resolve(root);
 pathArr = pathArr.split(path.sep);
 bannerName = pathArr[pathArr.length - 1];
 //console.log(root);
 //console.log(bannerName);
 try {
-  var possible = path.join(root, '_dist');
+  let possible = path.join(root, '_dist');
   fs.accessSync(possible, fs.F_OK);
   dist = possible;
   // console.log(dist)
@@ -22,17 +22,17 @@ try {
   // It isn't accessible
 }
 try {
-  var possible2 = path.join(root, 'dist');
+  let possible2 = path.join(root, 'dist');
   fs.accessSync(possible2, fs.F_OK);
   dist = possible2;
   // console.log(dist)
 } catch (e) {
   // It isn't accessible
 }
-var htmlPath = path.join(dist, 'index.html');
-var html = fs.readFileSync(htmlPath, 'utf8');
-var $ = cheerio.load(html);
-var config = {
+let htmlPath = path.join(dist, 'index.html');
+let html = fs.readFileSync(htmlPath, 'utf8');
+let $ = cheerio.load(html);
+let config = {
   specs: {
     fileSize: NaN, // kilobytes
     staticFileSize: NaN, // kilobytes
@@ -43,19 +43,19 @@ var config = {
   }
 };
 function getSpecs() {
-  var metaTags = $('meta');
+  let metaTags = $('meta');
   metaTags.each(function (i, tag) {
-    var name = tag.attribs['name'];
-    var content = tag.attribs['content'];
+    let name = tag.attribs['name'];
+    let content = tag.attribs['content'];
     if (!name) return;
     if (name.indexOf('bundle.static') !== -1) {
       config.specs['static'] = content;
     }
     if (name.indexOf('ad.') == -1) return;
-    var spec = name.replace('ad.', '');
-    var value = Number(content) || content;
+    let spec = name.replace('ad.', '');
+    let value = Number(content) || content;
     if (spec === 'size') {
-      var dimensions = content.split(',');
+      let dimensions = content.split(',');
       config.specs['width'] = Number(dimensions[0].split('=')[1])
       config.specs['height'] = Number(dimensions[1].split('=')[1])
     }
@@ -68,10 +68,10 @@ function getSpecs() {
 getSpecs();
 // tests
 describe('static location', function () {
-  var location = config.specs.static;
+  let location = config.specs.static;
   it('should be located ' + location, function (done) {
-    var isInZip = false;
-    var onEnd = function () {
+    let isInZip = false;
+    let onEnd = function () {
       expect(isInZip).toEqual(true);
       done()
     };
@@ -89,9 +89,9 @@ describe('static location', function () {
         });
       });
     } else if (location === 'in.folder') {
-      var isInFolder = false;
+      let isInFolder = false;
       try {
-        var stats = fs.statSync(path.join(dist, bannerName + '.jpg'));
+        let stats = fs.statSync(path.join(dist, bannerName + '.jpg'));
         isInFolder = true;
       }
       catch (e) {
@@ -99,9 +99,9 @@ describe('static location', function () {
       expect(isInFolder).toEqual(true);
       done()
     } else if (location === 'in.img') {
-      var isInFolder = false;
+      let isInFolder = false;
       try {
-        var stats = fs.statSync(path.join(dist, 'img', 'static' + '.jpg'));
+        let stats = fs.statSync(path.join(dist, 'img', 'static' + '.jpg'));
         isInFolder = true;
       }
       catch (e) {
@@ -113,12 +113,12 @@ describe('static location', function () {
   });
 });
 describe('bundle size', function () {
-  var intendedfileSize = config.specs.fileSize;
+  let intendedfileSize = config.specs.fileSize;
   it('should be smaller than ' + intendedfileSize + 'k'+' Static Not Counted in .zip weight' , function () {
-    var zip = fs.statSync(path.join(dist, bannerName + '.zip'));
-    var fileSize = zip['size'] / 1000;
-    var location = config.specs.static;
-    var staticPath = null;
+    let zip = fs.statSync(path.join(dist, bannerName + '.zip'));
+    let fileSize = zip['size'] / 1000;
+    let location = config.specs.static;
+    let staticPath = null;
     if (location === 'in.img') {
       staticPath = path.join(dist, 'img', 'static' + '.jpg');
     } else if (location === 'in.zip') {
@@ -127,8 +127,8 @@ describe('bundle size', function () {
       staticPath = path.join(dist, bannerName + '.jpg');
     }
     if (location !== 'in.folder') {
-      var staticStats = fs.statSync(staticPath);
-      var staticFileSize = staticStats['size'] / 1000;
+      let staticStats = fs.statSync(staticPath);
+      let staticFileSize = staticStats['size'] / 1000;
       fileSize = fileSize - staticFileSize
     }
     expect(fileSize).not.toBeGreaterThan(intendedfileSize);
@@ -136,21 +136,21 @@ describe('bundle size', function () {
 });
 describe('Spritesheet PNGs', function () {
   it('should have dimensions that are a multiple of 4' , function () {
-    var intendedfileSize = config.specs.fileSize;
+    let intendedfileSize = config.specs.fileSize;
 
-    var pngDir = path.join(root, '_toSprite');
-    var images = assetList(pngDir).filter( function(e) { 
+    let pngDir = path.join(root, '_toSprite');
+    let images = assetList(pngDir).filter( function(e) {
       return e.indexOf('.png') != -1 
     });
 
-    var badImages = images.filter(function(e) {
+    let badImages = images.filter(function(e) {
 
-      var dimensions = imageSize(e);
+      let dimensions = imageSize(e);
 
       if(dimensions.width % 4 != 0 || dimensions.height % 4 != 0) {
 
-        var goodW = Math.ceil(dimensions.width/4)*4;
-        var goodH = Math.ceil(dimensions.height/4)*4;
+        let goodW = Math.ceil(dimensions.width/4)*4;
+        let goodH = Math.ceil(dimensions.height/4)*4;
 
         console.log('!!    wrong dimensions:', e);
         console.log('!!    is: ' + dimensions.width + 'x' + dimensions.height );
@@ -161,7 +161,7 @@ describe('Spritesheet PNGs', function () {
     });
 
     function assetList(dir, filelist) {
-      var files = fs.readdirSync(dir);
+      let files = fs.readdirSync(dir);
       filelist = filelist || [];
       files.forEach(function (file) {
         if (fs.statSync(path.join(dir, file)).isDirectory()) {
@@ -178,10 +178,10 @@ describe('Spritesheet PNGs', function () {
   });
 });
 describe('static size', function () {
-  var intendedfileSize = config.specs.staticFileSize;
+  let intendedfileSize = config.specs.staticFileSize;
   it('should be smaller than ' + intendedfileSize + 'k', function () {
-    var location = config.specs.static;
-    var staticPath = null;
+    let location = config.specs.static;
+    let staticPath = null;
     if (location === 'in.img') {
       staticPath = path.join(dist, 'img', 'static' + '.jpg');
     } else if (location === 'in.zip') {
@@ -189,17 +189,17 @@ describe('static size', function () {
     } else if (location === 'in.folder') {
       staticPath = path.join(dist, bannerName + '.jpg');
     }
-    var staticStats = fs.statSync(staticPath);
-    var staticFileSize = staticStats['size'] / 1000;
+    let staticStats = fs.statSync(staticPath);
+    let staticFileSize = staticStats['size'] / 1000;
     expect(staticFileSize).not.toBeGreaterThan(config.specs.staticFileSize);
   })
 });
 describe('static image', function () {
-  var width = config.specs.width;
-  var height = config.specs.height;
+  let width = config.specs.width;
+  let height = config.specs.height;
   it('should match dimensions of the creative (' + width + 'x' + height + ')', function () {
-    var location = config.specs.static;
-    var dimensions = null
+    let location = config.specs.static;
+    let dimensions = null
     if (location === 'in.img') {
       dimensions = imageSize(path.join(dist, 'img', 'static' + '.jpg'));
     } else {
@@ -209,13 +209,18 @@ describe('static image', function () {
     expect(dimensions.height).toEqual(height);
   });
 });
+
+
+
+
+
 describe('assets', function () {
 
   //html build and imgs
-  var assets = assetList(dist + '/');
+  let assets = assetList(dist + '/');
 
   function assetList(dir, filelist) {
-    var files = fs.readdirSync(dir);
+    let files = fs.readdirSync(dir);
     filelist = filelist || [];
     files.forEach(function (file) {
       if (fs.statSync(path.join(dir, file)).isDirectory()) {
@@ -230,10 +235,10 @@ describe('assets', function () {
 
   function extraAssetCheck() {
 
-    var missingReference = false;
-    for (var i = 0; i < assets.length; i++) {
-      var asset = assets[i];
-      var referenceCount = count(html, asset)
+    let missingReference = false;
+    for (let i = 0; i < assets.length; i++) {
+      let asset = assets[i];
+      let referenceCount = count(html, asset)
       if (referenceCount < 1 && asset !== '.DS_Store' && asset !== bannerName + '.jpg' && asset !== bannerName + '.zip' && asset !== 'index.html') {
         //notifies the user in the console which assets are not used
         console.log('!!    unused asset:', assets[i]);
@@ -246,14 +251,14 @@ describe('assets', function () {
 
   function missingAssetCheck() {
 
-    var missingAsset = false;
+    let missingAsset = false;
 
-    var images = [];
-    var imagePaths = [];
+    let images = [];
+    let imagePaths = [];
 
     // get all images from css
-    var regex = /url\s*\(['|"]*([\s\S]*?)["|']*\)/gm;
-    var matches =0;
+    let regex = /url\s*\(['|"]*([\s\S]*?)["|']*\)/gm;
+    let matches =0;
     
     
     try {
@@ -265,8 +270,8 @@ describe('assets', function () {
     
     
     while(matches--){
-      var match = regex.exec(html)[1];
-      var isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
+      let match = regex.exec(html)[1];
+      let isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
       if(isImage) {
         imagePaths.push(match);
         match = path.join(dist, match);
@@ -278,8 +283,8 @@ describe('assets', function () {
     regex = / src=['|"]*([\s\S]*?)["|']*(>|\/>|\s)/gm; 
     matches = html.match(regex).length;
     while(matches--){
-      var match = regex.exec(html)[1];
-      var isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
+      let match = regex.exec(html)[1];
+      let isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
       if(isImage) {
         imagePaths.push(match);
         match = path.join(dist, match);
@@ -295,9 +300,9 @@ describe('assets', function () {
       return index == self.indexOf(elem);
     });
 
-    for(var i in images){
-      var image = images[i];
-      var exists = fs.existsSync(image);
+    for(let i in images){
+      let image = images[i];
+      let exists = fs.existsSync(image);
 
       if(exists == false) {
         console.log('\x1b[31m%s\x1b[0m', '!!    missing asset is referenced in HTML or CSS but not in the bundle:');
@@ -311,7 +316,7 @@ describe('assets', function () {
 
   //counts the frequency of asset used in compiled html or css
   function count(str, subStr) {
-    var matches = str.match(new RegExp(subStr, 'g'));
+    let matches = str.match(new RegExp(subStr, 'g'));
     
     try {
       return matches ? matches.length : 0;
