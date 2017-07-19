@@ -216,12 +216,19 @@ describe('svg css test', function () {
   
   let src = path.join(root, '_svgs', '/**/*.svg');
   
+  let allClasses = [];
+  
   glob(src)
     .then (function (files){
   
       
       
       files.forEach (function (file){
+        
+        // inventory of all styles in each file
+        let inventory = {};
+  
+        inventory.file = file;
       
         let content = fs.readFileSync(file,'utf8');
   
@@ -229,9 +236,30 @@ describe('svg css test', function () {
         
         let style = content.split ('<style type="text/css">')[1].split ('</style>')[0]  ;
         
-        console.log ('!!!!!',style)
+        let matches = style.match (/\.(.*?){/g);
+        
+        let trimmed = [];
+  
+        matches.forEach(function (match){
+  
+          trimmed.push(match.replace('.','').replace('{',''))
+          
+        });
+  
+        inventory.classMatches = trimmed;
+  
+        allClasses.push (inventory);
+        
       });
       
+      
+    })
+    .then (function (){
+    
+    
+    
+    
+    
     })
   
 });
