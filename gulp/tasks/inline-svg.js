@@ -52,6 +52,8 @@ module.exports = function (gulp, options, flags) {
               .pipe(replace(/DATA_HERE/, item,replaceOptions))
               .pipe(replace(/http:\/\//g, 'https://',replaceOptions))
               .pipe(replace(/'/g, '"',replaceOptions))
+              .pipe(replace(/\\n/g, '',replaceOptions))
+              .pipe(replace(/\\r/g, '',replaceOptions))
               .pipe (flatten())
               .pipe(gulp.dest(options.dist))
               .on('error', util.log)
@@ -62,6 +64,8 @@ module.exports = function (gulp, options, flags) {
                 resolve();
               });
           })
+          
+        
         /*
          
          .pipe(gulp.dest(options.dist))
