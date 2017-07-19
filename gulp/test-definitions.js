@@ -219,15 +219,10 @@ describe('svg css test', function () {
       let content = fs.readFileSync(file, 'utf8');
       let matches = [];
       try {
-  
         let style = content.split('<style type="text/css">')[1].split('</style>')[0];
         matches = style.match(/\.(.*?){/g);
-      }catch (err){
-  
-      
+      } catch (err) {
       }
-      
-      
       let trimmed = [];
       matches.forEach(function (match) {
         trimmed.push(match.replace('.', '').replace('{', ''))
@@ -253,9 +248,6 @@ describe('svg css test', function () {
         })
       })
     })
-    
-    
-    
     expect(duplicates.length).toEqual(0);
   })
 });
