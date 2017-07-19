@@ -5,6 +5,7 @@ let cheerio = require('cheerio');
 let path = require('path');
 let yauzl = require("yauzl");
 let colors = require('colors');
+let glob = require('glob-promise');
 let root = process.cwd();
 let dist = '';
 let bannerName = '';
@@ -210,7 +211,30 @@ describe('static image', function () {
   });
 });
 
-
+describe('svg css test', function () {
+  
+  
+  let src = path.join(root, '_svgs', '/**/*.svg');
+  
+  glob(src)
+    .then (function (files){
+  
+      
+      
+      files.forEach (function (file){
+      
+        let content = fs.readFileSync(file,'utf8');
+  
+        
+        
+        let style = content.split ('<style type="text/css">')[1].split ('</style>')[0]  ;
+        
+        console.log ('!!!!!',style)
+      });
+      
+    })
+  
+});
 
 
 
