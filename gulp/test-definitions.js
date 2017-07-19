@@ -232,13 +232,43 @@ describe('svg css test', function () {
       allClasses.forEach(function (inventory) {
         classCollection = _.concat(classCollection, inventory.classMatches);
       });
-      console.log('!!!!!!', classCollection);
+      
       let duplicates = _.filter(classCollection, function (value, index, iteratee) {
         return _.includes(iteratee, value, index + 1);
       });
   
-      console.log('!!!!!!', duplicates);
+      duplicates= duplicates.sort ();
       
+      
+      
+      return duplicates
+      
+    })
+    .then (function (dupes){
+  
+      dupes.forEach(function (dupe) {
+        
+        console.warn ('SVG CSS CLASS DUPLICATE',dupe );
+  
+        allClasses.forEach (function (svg){
+  
+          svg.classMatches.forEach(function (cssClass){
+          
+            if (cssClass === dupe) {
+              
+              console.warn ('Appears In ',svg.file);
+              
+            }
+          
+          })
+        
+        
+        })
+        
+        
+      })
+    
+    
     })
 });
 describe('assets', function () {
