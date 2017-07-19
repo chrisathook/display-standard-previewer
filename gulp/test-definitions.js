@@ -217,8 +217,17 @@ describe('svg css test', function () {
       let inventory = {};
       inventory.file = file;
       let content = fs.readFileSync(file, 'utf8');
-      let style = content.split('<style type="text/css">')[1].split('</style>')[0];
-      let matches = style.match(/\.(.*?){/g);
+      let matches = [];
+      try {
+  
+        let style = content.split('<style type="text/css">')[1].split('</style>')[0];
+        matches = style.match(/\.(.*?){/g);
+      }catch (err){
+  
+      
+      }
+      
+      
       let trimmed = [];
       matches.forEach(function (match) {
         trimmed.push(match.replace('.', '').replace('{', ''))
@@ -235,7 +244,7 @@ describe('svg css test', function () {
     });
     duplicates = duplicates.sort();
     duplicates.forEach(function (dupe) {
-      console.warn('SVG CSS CLASS DUPLICATE', dupe);
+      console.warn('!! SVG CSS CLASS DUPLICATE ERROR', dupe);
       allClasses.forEach(function (svg) {
         svg.classMatches.forEach(function (cssClass) {
           if (cssClass === dupe) {
@@ -244,7 +253,10 @@ describe('svg css test', function () {
         })
       })
     })
-    expect(dupes.length).toEqual(0);
+    
+    
+    
+    expect(duplicates.length).toEqual(0);
   })
 });
 describe('assets', function () {
