@@ -6,6 +6,7 @@ let path = require('path');
 let yauzl = require("yauzl");
 let colors = require('colors');
 let glob = require('glob-promise');
+let _ = require('lodash');
 let root = process.cwd();
 let dist = '';
 let bannerName = '';
@@ -43,6 +44,7 @@ let config = {
     static: ''
   }
 };
+
 function getSpecs() {
   let metaTags = $('meta');
   metaTags.each(function (i, tag) {
@@ -66,6 +68,7 @@ function getSpecs() {
   });
   // console.log(config);
 }
+
 getSpecs();
 // tests
 describe('static location', function () {
@@ -115,7 +118,7 @@ describe('static location', function () {
 });
 describe('bundle size', function () {
   let intendedfileSize = config.specs.fileSize;
-  it('should be smaller than ' + intendedfileSize + 'k'+' Static Not Counted in .zip weight' , function () {
+  it('should be smaller than ' + intendedfileSize + 'k' + ' Static Not Counted in .zip weight', function () {
     let zip = fs.statSync(path.join(dist, bannerName + '.zip'));
     let fileSize = zip['size'] / 1000;
     let location = config.specs.static;
@@ -136,31 +139,24 @@ describe('bundle size', function () {
   });
 });
 describe('Spritesheet PNGs', function () {
-  it('should have dimensions that are a multiple of 4' , function () {
+  it('should have dimensions that are a multiple of 4', function () {
     let intendedfileSize = config.specs.fileSize;
-
     let pngDir = path.join(root, '_toSprite');
-    let images = assetList(pngDir).filter( function(e) {
-      return e.indexOf('.png') != -1 
+    let images = assetList(pngDir).filter(function (e) {
+      return e.indexOf('.png') != -1
     });
-
-    let badImages = images.filter(function(e) {
-
+    let badImages = images.filter(function (e) {
       let dimensions = imageSize(e);
-
-      if(dimensions.width % 4 != 0 || dimensions.height % 4 != 0) {
-
-        let goodW = Math.ceil(dimensions.width/4)*4;
-        let goodH = Math.ceil(dimensions.height/4)*4;
-
+      if (dimensions.width % 4 != 0 || dimensions.height % 4 != 0) {
+        let goodW = Math.ceil(dimensions.width / 4) * 4;
+        let goodH = Math.ceil(dimensions.height / 4) * 4;
         console.log('!!    wrong dimensions:', e);
-        console.log('!!    is: ' + dimensions.width + 'x' + dimensions.height );
-        console.log('!!    should be: ' + goodW + 'x' + goodH );
-
+        console.log('!!    is: ' + dimensions.width + 'x' + dimensions.height);
+        console.log('!!    should be: ' + goodW + 'x' + goodH);
         return true;
       }
     });
-
+    
     function assetList(dir, filelist) {
       let files = fs.readdirSync(dir);
       filelist = filelist || [];
@@ -174,7 +170,7 @@ describe('Spritesheet PNGs', function () {
       });
       return filelist;
     }
-  
+    
     expect(badImages.length).toEqual(0);
   });
 });
@@ -210,67 +206,46 @@ describe('static image', function () {
     expect(dimensions.height).toEqual(height);
   });
 });
-
 describe('svg css test', function () {
-  
-  
   let src = path.join(root, '_svgs', '/**/*.svg');
-  
   let allClasses = [];
-  
   glob(src)
-    .then (function (files){
-  
-      
-      
-      files.forEach (function (file){
+    .then(function (files) {
+      files.forEach(function (file) {
         
         // inventory of all styles in each file
         let inventory = {};
-  
         inventory.file = file;
-      
-        let content = fs.readFileSync(file,'utf8');
-  
-        
-        
-        let style = content.split ('<style type="text/css">')[1].split ('</style>')[0]  ;
-        
-        let matches = style.match (/\.(.*?){/g);
-        
+        let content = fs.readFileSync(file, 'utf8');
+        let style = content.split('<style type="text/css">')[1].split('</style>')[0];
+        let matches = style.match(/\.(.*?){/g);
         let trimmed = [];
-  
-        matches.forEach(function (match){
-  
-          trimmed.push(match.replace('.','').replace('{',''))
-          
+        matches.forEach(function (match) {
+          trimmed.push(match.replace('.', '').replace('{', ''))
         });
-  
         inventory.classMatches = trimmed;
-  
-        allClasses.push (inventory);
-        
+        allClasses.push(inventory);
       });
-      
-      
     })
-    .then (function (){
-    
-    
-    
-    
-    
-    })
+    .then(function () {
+      let classCollection = [];
+      allClasses.forEach(function (inventory) {
+        classCollection = _.concat(classCollection, inventory.classMatches);
+      });
+      console.log('!!!!!!', classCollection);
+      let duplicates = _.filter(classCollection, function (value, index, iteratee) {
+        return _.includes(iteratee, value, index + 1);
+      });
   
+      console.log('!!!!!!', duplicates);
+      
+    })
 });
-
-
-
 describe('assets', function () {
-
+  
   //html build and imgs
   let assets = assetList(dist + '/');
-
+  
   function assetList(dir, filelist) {
     let files = fs.readdirSync(dir);
     filelist = filelist || [];
@@ -284,9 +259,8 @@ describe('assets', function () {
     });
     return filelist;
   }
-
+  
   function extraAssetCheck() {
-
     let missingReference = false;
     for (let i = 0; i < assets.length; i++) {
       let asset = assets[i];
@@ -297,89 +271,70 @@ describe('assets', function () {
         missingReference = true;
       }
     }
-
     return (missingReference == false)
   }
-
+  
   function missingAssetCheck() {
-
     let missingAsset = false;
-
     let images = [];
     let imagePaths = [];
-
     // get all images from css
     let regex = /url\s*\(['|"]*([\s\S]*?)["|']*\)/gm;
-    let matches =0;
-    
-    
+    let matches = 0;
     try {
-      matches  = html.match(regex).length;
-    }catch (err){
-      
-      console.log ('!!!! no images',matches)
+      matches = html.match(regex).length;
+    } catch (err) {
+      console.log('!!!! no images', matches)
     }
-    
-    
-    while(matches--){
+    while (matches--) {
       let match = regex.exec(html)[1];
       let isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
-      if(isImage) {
+      if (isImage) {
         imagePaths.push(match);
         match = path.join(dist, match);
         images.push(match);
       }
     }
-
     // get all source references
-    regex = / src=['|"]*([\s\S]*?)["|']*(>|\/>|\s)/gm; 
+    regex = / src=['|"]*([\s\S]*?)["|']*(>|\/>|\s)/gm;
     matches = html.match(regex).length;
-    while(matches--){
+    while (matches--) {
       let match = regex.exec(html)[1];
       let isImage = match.indexOf('.gif') > -1 || match.indexOf('.jpg') > -1 || match.indexOf('.png') > -1 || match.indexOf('.svg') > -1;
-      if(isImage) {
+      if (isImage) {
         imagePaths.push(match);
         match = path.join(dist, match);
         images.push(match);
       }
     }
-
-    images = images.filter(function(elem, index, self) { // remove duplicates
+    images = images.filter(function (elem, index, self) { // remove duplicates
       return index == self.indexOf(elem);
     });
-
-    imagePaths = imagePaths.filter(function(elem, index, self) { // remove duplicates
+    imagePaths = imagePaths.filter(function (elem, index, self) { // remove duplicates
       return index == self.indexOf(elem);
     });
-
-    for(let i in images){
+    for (let i in images) {
       let image = images[i];
       let exists = fs.existsSync(image);
-
-      if(exists == false) {
+      if (exists == false) {
         console.log('\x1b[31m%s\x1b[0m', '!!    missing asset is referenced in HTML or CSS but not in the bundle:');
-        console.log('\x1b[31m%s\x1b[0m', String ( imagePaths[i] ));
+        console.log('\x1b[31m%s\x1b[0m', String(imagePaths[i]));
         missingAsset = true;
       }
     }
-    
     return (missingAsset == false)
   }
-
+  
   //counts the frequency of asset used in compiled html or css
   function count(str, subStr) {
     let matches = str.match(new RegExp(subStr, 'g'));
-    
     try {
       return matches ? matches.length : 0;
-    }catch (err) {
-      
+    } catch (err) {
       return 0;
     }
-    
-    
   }
-
+  
   it('should have no unused assets', function () {
     expect(extraAssetCheck()).not.toEqual(false);
   });
