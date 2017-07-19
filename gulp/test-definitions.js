@@ -207,64 +207,45 @@ describe('static image', function () {
   });
 });
 describe('svg css test', function () {
-  
-    let src = path.join(root, '_svgs', '/**/*.svg');
-    let allClasses = [];
-    
-    let wtf = function (dupes){
-  
-      it('no SVG CSS classes should be duplicates ', function () {
-        expect(dupes.length).toEqual(0);
-      })
-    }
-    
-    
-    glob(src)
-      .then(function (files) {
-        files.forEach(function (file) {
-          
-          // inventory of all styles in each file
-          let inventory = {};
-          inventory.file = file;
-          let content = fs.readFileSync(file, 'utf8');
-          let style = content.split('<style type="text/css">')[1].split('</style>')[0];
-          let matches = style.match(/\.(.*?){/g);
-          let trimmed = [];
-          matches.forEach(function (match) {
-            trimmed.push(match.replace('.', '').replace('{', ''))
-          });
-          inventory.classMatches = trimmed;
-          allClasses.push(inventory);
-        });
-      })
-      .then(function () {
-        let classCollection = [];
-        allClasses.forEach(function (inventory) {
-          classCollection = _.concat(classCollection, inventory.classMatches);
-        });
-        let duplicates = _.filter(classCollection, function (value, index, iteratee) {
-          return _.includes(iteratee, value, index + 1);
-        });
-        duplicates = duplicates.sort();
-        return duplicates
-      })
-      .then(function (dupes) {
-        dupes.forEach(function (dupe) {
-          console.warn('SVG CSS CLASS DUPLICATE', dupe);
-          allClasses.forEach(function (svg) {
-            svg.classMatches.forEach(function (cssClass) {
-              if (cssClass === dupe) {
-                console.warn('Appears In ', svg.file);
-              }
-            })
-          })
+  let src = path.join(root, '_svgs', '/**/*.svg');
+  let allClasses = [];
+  it('no SVG CSS classes should be duplicates ', function () {
+    let files = glob.sync(src);
+    files.forEach(function (file) {
+      
+      // inventory of all styles in each file
+      let inventory = {};
+      inventory.file = file;
+      let content = fs.readFileSync(file, 'utf8');
+      let style = content.split('<style type="text/css">')[1].split('</style>')[0];
+      let matches = style.match(/\.(.*?){/g);
+      let trimmed = [];
+      matches.forEach(function (match) {
+        trimmed.push(match.replace('.', '').replace('{', ''))
+      });
+      inventory.classMatches = trimmed;
+      allClasses.push(inventory);
+    });
+    let classCollection = [];
+    allClasses.forEach(function (inventory) {
+      classCollection = _.concat(classCollection, inventory.classMatches);
+    });
+    let duplicates = _.filter(classCollection, function (value, index, iteratee) {
+      return _.includes(iteratee, value, index + 1);
+    });
+    duplicates = duplicates.sort();
+    duplicates.forEach(function (dupe) {
+      console.warn('SVG CSS CLASS DUPLICATE', dupe);
+      allClasses.forEach(function (svg) {
+        svg.classMatches.forEach(function (cssClass) {
+          if (cssClass === dupe) {
+            console.warn('Appears In ', svg.file);
+          }
         })
-  
-  
-        wtf (dupes);
-        
       })
-  
+    })
+    expect(dupes.length).toEqual(0);
+  })
 });
 describe('assets', function () {
   
