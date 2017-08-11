@@ -11,6 +11,7 @@ let root = process.cwd();
 let dist = '';
 let bannerName = '';
 let pathArr = path.resolve(root);
+let jsScanPath = null;
 pathArr = pathArr.split(path.sep);
 bannerName = pathArr[pathArr.length - 1];
 //console.log(root);
@@ -19,6 +20,7 @@ try {
   let possible = path.join(root, '_dist');
   fs.accessSync(possible, fs.F_OK);
   dist = possible;
+  jsScanPath = path.join(root, '_dist','combined.js');
   // console.log(dist)
 } catch (e) {
   // It isn't accessible
@@ -27,12 +29,22 @@ try {
   let possible2 = path.join(root, 'dist');
   fs.accessSync(possible2, fs.F_OK);
   dist = possible2;
+  jsScanPath = path.join(root, 'dist','combined.js');
   // console.log(dist)
 } catch (e) {
   // It isn't accessible
 }
+
+
+
+
+
+
 let htmlPath = path.join(dist, 'index.html');
 let html = fs.readFileSync(htmlPath, 'utf8');
+
+let combinedJS = fs.readFileSync(jsScanPath, 'utf8');
+
 let $ = cheerio.load(html);
 let config = {
   specs: {
@@ -274,13 +286,22 @@ describe('assets', function () {
     let missingReference = false;
     for (let i = 0; i < assets.length; i++) {
       let asset = assets[i];
-      let referenceCount = count(html, asset)
+      
+      let combined = html + combinedJS;
+      
+      let referenceCount = count(combined, asset);
       if (referenceCount < 1 && asset !== '.DS_Store' && asset !== bannerName + '.jpg' && asset !== bannerName + '.zip' && asset !== 'index.html') {
         //notifies the user in the console which assets are not used
         console.log('!!    unused asset:', assets[i]);
         missingReference = true;
       }
     }
+    
+    
+    
+    
+    
+    
     return (missingReference == false)
   }
   
