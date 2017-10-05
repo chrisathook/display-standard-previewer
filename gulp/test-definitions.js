@@ -256,7 +256,7 @@ describe('svg ID test', function () {
       allClasses.forEach(function (svg) {
         svg.classMatches.forEach(function (cssClass) {
           if (cssClass === dupe) {
-            console.warn('Appears In ', path.relative(root, svg.file));
+            console.warn('\x1b[33m%s\x1b[0m', 'Appears In '+ path.relative(root, svg.file));
           }
         })
       })
@@ -304,7 +304,7 @@ describe('svg css test', function () {
       allClasses.forEach(function (svg) {
         svg.classMatches.forEach(function (cssClass) {
           if (cssClass === dupe) {
-            console.warn('Appears In ', path.relative(root, svg.file));
+            console.warn('\x1b[31m%s\x1b[0m', 'Appears In '+ path.relative(root, svg.file));
           }
         })
       })
