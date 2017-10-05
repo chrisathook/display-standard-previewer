@@ -218,10 +218,59 @@ describe('static image', function () {
     expect(dimensions.height).toEqual(height);
   });
 });
+
+describe('svg ID test', function () {
+  let src = path.join(root, '_svgs', '/**/*.svg');
+  let allClasses = [];
+  it('no SVG IDs should be duplicates must be GLOBAL UNIQUE ', function () {
+    let files = glob.sync(src);
+    files.forEach(function (file) {
+      
+      // inventory of all styles in each file
+      let inventory = {};
+      inventory.file = file;
+      let content = fs.readFileSync(file, 'utf8');
+      let matches = [];
+      try {
+        
+        matches = content.match(/id\=\"(.*?)\"/g);
+      } catch (err) {
+      }
+      let trimmed = [];
+      matches.forEach(function (match) {
+        trimmed.push(match.replace('.', '').replace('{', ''))
+      });
+      inventory.classMatches = trimmed;
+      allClasses.push(inventory);
+    });
+    let classCollection = [];
+    allClasses.forEach(function (inventory) {
+      classCollection = _.concat(classCollection, inventory.classMatches);
+    });
+    let duplicates = _.filter(classCollection, function (value, index, iteratee) {
+      return _.includes(iteratee, value, index + 1);
+    });
+    duplicates = duplicates.sort();
+    duplicates.forEach(function (dupe) {
+      console.warn('!! SVG IDs DUPLICATE ERROR', dupe);
+      allClasses.forEach(function (svg) {
+        svg.classMatches.forEach(function (cssClass) {
+          if (cssClass === dupe) {
+            console.warn('Appears In ', path.relative(root, svg.file));
+          }
+        })
+      })
+    })
+    expect(duplicates.length).toEqual(0);
+  })
+});
+
+
+
 describe('svg css test', function () {
   let src = path.join(root, '_svgs', '/**/*.svg');
   let allClasses = [];
-  it('no SVG CSS classes should be duplicates ', function () {
+  it('no SVG CSS classes should be duplicates must be GLOBAL UNIQUE ', function () {
     let files = glob.sync(src);
     files.forEach(function (file) {
       
@@ -255,7 +304,7 @@ describe('svg css test', function () {
       allClasses.forEach(function (svg) {
         svg.classMatches.forEach(function (cssClass) {
           if (cssClass === dupe) {
-            console.warn('Appears In ', svg.file);
+            console.warn('Appears In ', path.relative(root, svg.file));
           }
         })
       })
