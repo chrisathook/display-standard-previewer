@@ -20,7 +20,8 @@ module.exports = function (images_path, build_dist_path, js_path) {
     },
     clean: {
       src: dest + '/**/*'
-    }, reload: {
+    },
+    reload: {
       src: [
         path.join(root, '/**/index.html'),
         path.join(root, `/${js_path}/**/*.js`),
@@ -108,8 +109,8 @@ module.exports = function (images_path, build_dist_path, js_path) {
       },
       sprite_image: {
               src: [
-                path.join(dest, `${build_dist_path}`, '/**/*-sprite.png'),
-                path.join(dest, `${build_dist_path}`, '/**/*-sprite.jpg')
+                path.join(dest, `${build_dist_path}`, '/**/*.png'),
+                path.join(dest, `${build_dist_path}`, '/**/*.jpg')
               ]
             },
       dist: path.join(dest, `${build_dist_path}`)
