@@ -110,7 +110,8 @@ module.exports = function (images_path, build_dist_path, js_path) {
       sprite_image: {
               src: [
                 path.join(dest, `${build_dist_path}`, '/**/*.png'),
-                path.join(dest, `${build_dist_path}`, '/**/*.jpg')
+                path.join(dest, `${build_dist_path}`, '/**/*.jpg'),
+                '!' + path.join(dest, `${build_dist_path}`, '/**/static-backup.jpg')
               ]
             },
       dist: path.join(dest, `${build_dist_path}`)
