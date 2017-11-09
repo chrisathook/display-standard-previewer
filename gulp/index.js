@@ -12,7 +12,66 @@ var checkTemplateType = function () {
   if (file.search('<meta name="template.type" content="215_MU">') > -1) {
     config = config('img', 'dist', 'js');
   } else {
-    config = config('img', 'dist', 'js');
+  
+    let root = process.cwd();
+    
+    let outputPath = '';
+    let imagePath = '';
+    let jsPath = '';
+    try {
+      outputPath = path.join(root, '_dist');
+      fs.accessSync(outputPath, fs.F_OK);
+  
+      
+      
+    } catch (e) {
+    }
+    try {
+      outputPath = path.join(root, 'dist');
+      fs.accessSync(outputPath, fs.F_OK);
+      // console.log(dist)
+    } catch (e) {
+    }
+    try {
+      imagePath = path.join(root, 'images');
+      fs.accessSync(imagePath, fs.F_OK);
+    } catch (e) {
+    }
+    try {
+      imagePath = path.join(root, 'img');
+      fs.accessSync(imagePath, fs.F_OK);
+      // console.log(dist)
+    } catch (e) {
+    }
+    try {
+      jsPath = path.join(root, 'libs');
+      fs.accessSync(jsPath, fs.F_OK);
+    } catch (e) {
+    }
+    try {
+      jsPath = path.join(root, 'js');
+      fs.accessSync(jsPath, fs.F_OK);
+      // console.log(dist)
+    } catch (e) {
+    }
+  
+  
+    outputPath = path.basename(outputPath);
+    imagePath = path.basename(imagePath);
+    jsPath = path.basename(jsPath);
+    
+    console.log(root);
+    console.log(outputPath);
+    console.log( imagePath);
+    console.log(jsPath);
+    
+    if (outputPath === '' || imagePath === '' || jsPath === '') {
+      throw new Error('Paths are bad')
+    }
+  
+    config = config(imagePath, outputPath, jsPath);
+    
+    //config = config('img', 'dist', 'js');
   }
 };
 
