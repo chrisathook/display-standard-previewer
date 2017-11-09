@@ -12,7 +12,7 @@ var checkTemplateType = function () {
   if (file.search('<meta name="template.type" content="215_MU">') > -1) {
     config = config('img', 'dist', 'js');
   } else {
-    config = config();
+    config = config('img', 'dist', 'js');
   }
 };
 
