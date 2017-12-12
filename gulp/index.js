@@ -149,7 +149,7 @@ module.exports = function (opts, task) {
     } else if (task === 'build-dist') {
       gulp.series('prod','inline-svg', 'sprite-all', 'sass', 'clean-dist', 'build-dist', 'scripts-vendor', gulp.parallel(
         'optimize-css',
-        'optimize-js',
+        /*'optimize-js',*/
         'optimize-html',
         'optimize-sprite-image',
         'rename-standard'

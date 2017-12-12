@@ -6,7 +6,11 @@
 var useref = require('gulp-useref');
 var source = require('vinyl-source-stream');
 var util = require('gulp-util');
-var lec = require ('gulp-line-ending-corrector')
+var lec = require('gulp-line-ending-corrector');
+var gulpif = require('gulp-if');
+var uglify = require('gulp-uglify');
+var debug = require('gulp-debug');
+var lazypipe = require('lazypipe');
 /**
  * @param gulp - function
  * @param bs - Browser sync instance
@@ -18,6 +22,8 @@ var lec = require ('gulp-line-ending-corrector')
  * flags.sourcemap : boolean
  * @returns {Function}
  */
+
+//.pipe(uglify({'compress': {'drop_console': !flags.sourcemap}}).on('error', util.log))
 module.exports = function (gulp, bs, options, flags) {
   return function () {
     util.log('@tasks/scripts-vendor start ');
@@ -25,7 +31,14 @@ module.exports = function (gulp, bs, options, flags) {
     try {
       return gulp.src(options.entry)
         .pipe(lec())
-        .pipe(useref().on('error', util.log))
+        .pipe(useref(
+          {},
+          lazypipe().pipe(
+            function () {
+              return gulpif(['*.js','**/!DrawSVGPlugin.js','**/!DrawSVGPlugin.js'], uglify({'compress': {'drop_console': !flags.sourcemap}}).on('error', util.log))
+            }
+          )
+        ).on('error', util.log))
         .pipe(gulp.dest(options.dist))
         .pipe(bs.stream()).on('error', util.log)
         .on('finish', function () {
