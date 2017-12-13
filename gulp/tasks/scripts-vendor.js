@@ -32,10 +32,10 @@ module.exports = function (gulp, bs, options, flags) {
       return gulp.src(options.entry)
         .pipe(lec())
         .pipe(useref(
-          {},
+          {newLine:'\n\n'},
           lazypipe().pipe(
             function () {
-              return gulpif(['*.js','**/!DrawSVGPlugin.js','**/!DrawSVGPlugin.js'], uglify({'compress': {'drop_console': !flags.sourcemap}}).on('error', util.log))
+              return gulpif('!**/*.min.js', uglify({'compress': {'drop_console': !flags.sourcemap}}).on('error', util.log))
             }
           )
         ).on('error', util.log))
