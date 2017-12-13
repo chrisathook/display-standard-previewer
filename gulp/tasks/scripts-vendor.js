@@ -11,6 +11,7 @@ var gulpif = require('gulp-if');
 var uglify = require('gulp-uglify');
 var debug = require('gulp-debug');
 var lazypipe = require('lazypipe');
+var strip = require('gulp-strip-comments');
 /**
  * @param gulp - function
  * @param bs - Browser sync instance
@@ -39,6 +40,7 @@ module.exports = function (gulp, bs, options, flags) {
             }
           )
         ).on('error', util.log))
+        .pipe(strip())
         .pipe(gulp.dest(options.dist))
         .pipe(bs.stream()).on('error', util.log)
         .on('finish', function () {

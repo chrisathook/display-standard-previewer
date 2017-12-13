@@ -69,6 +69,7 @@
     "yauzl": "^2.8.0"
   },
   "devDependencies": {
+    "gulp-strip-comments": "^2.5.1",
     "lazypipe": "^1.0.1"
   }
 }
