@@ -25,7 +25,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
       src: [
         path.join(root, '/**/index.html'),
         path.join(root, `/${js_path}/**/*.js`),
-        path.join(root, `/${images_path}/**/*.{gif,jpg,png,svg}`),
+        path.join(root, `/${images_path}/**/*.{gif,jpg,png}`),
         '!' + path.join(dest, `${build_dist_path}`)
       ]
     },
@@ -68,7 +68,7 @@ module.exports = function (images_path, build_dist_path, js_path) {
         src: path.join(dest, `${build_dist_path}`, '/**/*')
       },
       src: [
-        path.join(root, `/${images_path}/**/*.{gif,jpg,png,svg}`),
+        path.join(root, `/${images_path}/**/*.{gif,jpg}`),
         '!' + path.join(root, `/${images_path}/{_assets,_assets/**}`),
         path.join(root, '/css/**/*.css'),
         path.join(root, '/*manifest.js'), // for FT manifest file
