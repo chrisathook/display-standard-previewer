@@ -27,6 +27,7 @@ module.exports = function (gulp, bs, options, flags) {
       var html = fs.readFileSync(htmlPath, 'utf8');
       var $ = cheerio.load(html);
       var metaTags = $('meta');
+      options.bgColor = '#000000';
       metaTags.each(function (i, tag) {
         var name = tag.attribs['name'];
         var content = tag.attribs['content'];
@@ -35,6 +36,9 @@ module.exports = function (gulp, bs, options, flags) {
         if (name.indexOf('ad.compression') !== -1) {
           var value = Number(content) || content;
           options.quality = value
+        }
+        if (name.indexOf('ad.spriteBackgroundColor') !== -1) {
+          options.bgColor = content;
         }
       });
     } catch (err) {
@@ -85,7 +89,8 @@ module.exports = function (gulp, bs, options, flags) {
           .pipe(jimp({
             '': {
               type: 'jpg',
-              quality: options.quality
+              quality: options.quality,
+              background: options.bgColor ,
             }
           }).on('error', util.log))
           .pipe(gulp.dest(options.dist_img))
@@ -106,7 +111,7 @@ module.exports = function (gulp, bs, options, flags) {
           //console.log("!!! CSS DONE")
           cssDone = true
         })
-        ;
+      ;
       // Return a merged stream to handle both `end` events
       return new Promise(function (resolve, reject) {
         merge(imgStream, cssStream)
