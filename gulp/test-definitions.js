@@ -284,6 +284,14 @@ describe('svg css test', function () {
         matches = style.match(/\.(.*?){/g);
       } catch (err) {
       }
+      	  matches = _.map (matches, function (item) {
+		if (item.search (":{") === -1) {
+		  return item
+		  }
+		  
+	  })
+	  matches = _.without (matches,undefined)
+      
       let trimmed = [];
       matches.forEach(function (match) {
         trimmed.push(match.replace('.', '').replace('{', ''))
